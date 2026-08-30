@@ -210,6 +210,10 @@
   .member-role.p-gold{background:#fff6d9;color:#8a6900;}
   .member-role.p-lime{background:#f2f8cf;color:#5c6900;}
   .member-role.p-blue{background:#e2f3fa;color:var(--blue);}
+  .member-card-lead{border-top-width:5px;padding-top:26px;padding-bottom:24px;}
+  .member-card-lead .avatar{width:76px;height:76px;font-size:1.35rem;}
+  .member-card-lead h3{font-size:1.18rem;}
+  .member-card-lead .member-role{font-size:.74rem;padding:5px 14px;}
   .top-navy{border-top:4px solid var(--navy);}
   .top-blue{border-top:4px solid var(--blue);}
   .top-gold{border-top:4px solid var(--gold);}
@@ -341,6 +345,7 @@
       <h2>Meet the PDD Team</h2>
       <p>Before you dive into the work, get to know the people you'll be working alongside. Have a look at each team member's LinkedIn or other professional profile and add one professional fact about them below, something that will help the rest of the team see you've done your homework. Each of the four of you adds your own entry, so pick your name before you save.</p>
     </div>
+    <div id="teamLeaderGrid" style="max-width:420px;margin:0 auto 18px;"></div>
     <div class="grid grid-2" id="teamGrid"></div>
 
     <div class="card">
@@ -398,7 +403,7 @@
 <script>
 /* ---------- data ---------- */
 const TEAM = [
-  {slug:'anita', name:'Anita van Vuuren', role:'Unit Head · CES'},
+  {slug:'anita', name:'Anita van Vuuren', role:'Unit Head · CES', isLead:true},
   {slug:'marchelle', name:'Marchelle Fester', role:'Process Manager · DCES'},
   {slug:'kurt', name:'Kurt Minnaar', role:'Creative Manager · DCES'},
   {slug:'gizelle', name:'Gizelle Simpson', role:'Creative Manager · DCES'},
@@ -756,36 +761,46 @@ document.getElementById('tabBar').addEventListener('click', (e)=>{
 /* ---------- build team cards ---------- */
 function initials(name){ return name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase(); }
 
+function buildMemberCard(p, avatarColor, pillColor, extraClass){
+  const card = document.createElement('div');
+  card.className = 'card member-card c-'+avatarColor + (extraClass ? ' '+extraClass : '');
+  card.innerHTML = `
+    <div class="avatar">${initials(p.name)}</div>
+    <h3>${p.name}</h3>
+    <span class="member-role p-${pillColor}">${p.role}</span>
+    <div class="fact-list" id="teamFacts-${p.slug}" data-accent="${avatarColor}"></div>
+    <details class="add-fact">
+      <summary>Add what you found out</summary>
+      <div class="inner">
+        <label>Who are you?</label>
+        <select id="teamWho-${p.slug}" onchange="loadOwnTeamFact('${p.slug}')">
+          <option value="">Choose your name</option>
+          ${INTERNS.map(i=>`<option value="${i.slug}">${i.name}</option>`).join('')}
+        </select>
+        <label>Your professional fact about ${p.name.split(' ')[0]}</label>
+        <textarea id="team-${p.slug}" placeholder="What did you find out about them?"></textarea>
+        <button class="btn" onclick="saveTeamFact('${p.slug}')">💾 Save my fact</button>
+        <span class="status" id="teamStatus-${p.slug}"></span>
+      </div>
+    </details>
+  `;
+  return card;
+}
 function buildTeam(){
+  const leaderGrid = document.getElementById('teamLeaderGrid');
   const grid = document.getElementById('teamGrid');
   const avatarColors = ['navy','blue','red'];
   const pillColors = ['gold','lime','blue'];
-  TEAM.forEach((p,idx)=>{
+  const lead = TEAM.find(p=>p.isLead);
+  const rest = TEAM.filter(p=>!p.isLead);
+
+  if(lead){
+    leaderGrid.appendChild(buildMemberCard(lead, 'navy', 'gold', 'member-card-lead'));
+  }
+  rest.forEach((p,idx)=>{
     const avatarColor = avatarColors[idx % avatarColors.length];
     const pillColor = pillColors[idx % pillColors.length];
-    const card = document.createElement('div');
-    card.className = 'card member-card c-'+avatarColor;
-    card.innerHTML = `
-      <div class="avatar">${initials(p.name)}</div>
-      <h3>${p.name}</h3>
-      <span class="member-role p-${pillColor}">${p.role}</span>
-      <div class="fact-list" id="teamFacts-${p.slug}" data-accent="${avatarColor}"></div>
-      <details class="add-fact">
-        <summary>Add what you found out</summary>
-        <div class="inner">
-          <label>Who are you?</label>
-          <select id="teamWho-${p.slug}" onchange="loadOwnTeamFact('${p.slug}')">
-            <option value="">Choose your name</option>
-            ${INTERNS.map(i=>`<option value="${i.slug}">${i.name}</option>`).join('')}
-          </select>
-          <label>Your professional fact about ${p.name.split(' ')[0]}</label>
-          <textarea id="team-${p.slug}" placeholder="What did you find out about them?"></textarea>
-          <button class="btn" onclick="saveTeamFact('${p.slug}')">💾 Save my fact</button>
-          <span class="status" id="teamStatus-${p.slug}"></span>
-        </div>
-      </details>
-    `;
-    grid.appendChild(card);
+    grid.appendChild(buildMemberCard(p, avatarColor, pillColor));
   });
 }
 async function saveTeamFact(teamSlug){
