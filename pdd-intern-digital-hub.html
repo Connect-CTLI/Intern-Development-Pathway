@@ -1,0 +1,1603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PDD Digital Hub for New Interns</title>
+<style>
+  :root{
+    --navy:#001489;
+    --blue:#007dba;
+    --lime:#c4d600;
+    --red:#d73828;
+    --gold:#ffc600;
+    --ink:#12183a;
+    --paper:#f2f4f9;
+    --white:#ffffff;
+    --line:#dde1ee;
+    --muted:#5a5f7a;
+    --radius:14px;
+    font-family:'Century Gothic','Gotham','Avenir Next','Segoe UI',sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html{overflow-x:hidden;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,h4{
+    font-family:'Century Gothic','Gotham','Avenir Next','Segoe UI',sans-serif;
+    font-weight:700;
+    color:var(--navy);
+    letter-spacing:.2px;
+  }
+  a{color:var(--blue);}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px;}
+  :focus-visible{outline:2px solid var(--blue);outline-offset:2px;}
+  @media (prefers-reduced-motion: reduce){*{animation-duration:.01ms !important;transition-duration:.01ms !important;}}
+
+  /* header: plain, sits directly on the page, no colour block */
+  header.site{padding:32px 0 22px;}
+  .eyebrow{
+    display:inline-block;text-transform:uppercase;font-size:.72rem;letter-spacing:1.5px;
+    color:var(--muted);font-weight:700;margin-bottom:8px;
+  }
+  header.site h1{font-size:1.7rem;margin:0 0 8px;max-width:680px;}
+  header.site p.sub{margin:0;color:var(--muted);max-width:620px;font-size:.96rem;}
+
+  /* nav: pill buttons, matches the coaching hub's nav-btn style */
+  nav.tabs{padding:0 0 22px;}
+  nav.tabs .wrap{display:flex;flex-wrap:wrap;gap:10px;padding:0 24px;}
+  nav.tabs button, .subtab-bar button{
+    background:var(--white);border:1px solid var(--line);color:var(--navy);
+    padding:11px 20px;border-radius:50px;font-weight:600;
+    font-family:inherit;font-size:.87rem;cursor:pointer;white-space:nowrap;transition:background .15s;
+  }
+  nav.tabs button:hover, .subtab-bar button:hover{background:#e6f1fb;}
+  nav.tabs button.active, .subtab-bar button.active{background:var(--navy);color:var(--white);border-color:var(--navy);}
+
+  main{padding:10px 0 70px;}
+  section.page{display:none;}
+  section.page.active{display:block;}
+
+  .card{
+    background:var(--white);border:1px solid var(--line);border-radius:var(--radius);
+    padding:22px 24px;margin-bottom:18px;
+  }
+  .hero{border-top:5px solid var(--navy);}
+  h2{margin-top:0;font-size:1.2rem;}
+  .grid{display:grid;gap:18px;}
+  .grid-2{grid-template-columns:repeat(2,1fr);}
+  .grid-3{grid-template-columns:repeat(3,1fr);}
+  .grid-4{grid-template-columns:repeat(4,1fr);}
+  @media (max-width:840px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr;}}
+
+  .pill{
+    display:inline-block;padding:3px 12px;border-radius:20px;font-size:.72rem;font-weight:700;
+    text-transform:uppercase;letter-spacing:1px;
+  }
+  .pill.goal{background:#e6ecff;color:var(--navy);}
+  .pill.reality{background:#e2f3fa;color:var(--blue);}
+  .pill.options{background:#f4f9d6;color:#5c6900;}
+  .pill.way{background:#ffece9;color:var(--red);}
+
+  .grow-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:20px 0;}
+  @media (max-width:900px){.grow-grid{grid-template-columns:repeat(2,1fr);}}
+  .grow-card{
+    border-radius:var(--radius);padding:18px;color:var(--white);min-height:150px;
+  }
+  .grow-card h3{color:var(--white);margin:0 0 8px;font-size:1.02rem;}
+  .grow-card p{margin:0;font-size:.86rem;opacity:.95;}
+  .grow-card.goal{background:var(--navy);}
+  .grow-card.reality{background:var(--blue);}
+  .grow-card.options{background:var(--lime);color:#2c3300;}
+  .grow-card.options h3{color:#2c3300;}
+  .grow-card.way{background:var(--red);}
+
+  .badge-row{display:flex;gap:12px;flex-wrap:wrap;margin:18px 0 6px;}
+  .badge{
+    flex:1;min-width:150px;border:1px solid var(--line);border-radius:12px;padding:14px;
+    text-align:center;background:var(--white);opacity:.55;
+  }
+  .badge.done{opacity:1;border-color:var(--gold);background:#fffbe8;}
+  .badge .ico{font-size:1.5rem;display:block;margin-bottom:4px;}
+  .badge span.label{font-size:.78rem;font-weight:700;color:var(--navy);}
+
+  label{display:block;font-weight:700;font-size:.82rem;color:var(--navy);margin:12px 0 5px;}
+  textarea,input[type=text],input[type=password],input[type=date],select,input[type=number]{
+    width:100%;padding:9px 12px;border:1px solid var(--line);border-radius:6px;
+    font-family:inherit;font-size:.92rem;color:var(--ink);background:#fbfcfe;
+  }
+  textarea:focus,input:focus,select:focus{border-color:var(--blue);outline:none;}
+  textarea{min-height:90px;resize:vertical;}
+  .btn{
+    display:inline-flex;align-items:center;gap:6px;background:var(--blue);color:var(--white);
+    border:none;padding:11px 20px;border-radius:50px;font-weight:600;cursor:pointer;
+    font-family:inherit;font-size:.87rem;margin-top:10px;transition:background .15s;
+  }
+  .btn:hover{background:var(--navy);}
+  .btn.gold{background:var(--gold);color:#3a2c00;}
+  .btn.gold:hover{background:#e6b400;}
+  .btn.outline{background:var(--white);border:1px solid var(--line);color:var(--navy);}
+  .btn.outline:hover{background:#e6f1fb;}
+  .status{font-size:.78rem;color:#5c8a00;font-weight:700;margin-left:10px;}
+  .status.err{color:var(--red);}
+
+  .task{
+    display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px dashed var(--line);
+  }
+  .task:last-child{border-bottom:none;}
+  .task input{margin-top:3px;}
+  .task .t-body strong{display:block;color:var(--navy);font-size:.92rem;}
+  .task .t-body span{font-size:.85rem;color:var(--muted);}
+
+  .avatar{
+    width:52px;height:52px;border-radius:50%;
+    background:var(--navy);color:var(--white);
+    display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem;flex-shrink:0;
+  }
+  .team-card{display:flex;gap:14px;}
+  .team-card .who h3{margin:0;font-size:1rem;}
+  .team-card .who p{margin:2px 0 0;font-size:.82rem;color:var(--muted);}
+
+  /* About You: simple profile card */
+  .profile-card{padding:0;}
+  .profile-banner{height:56px;background:var(--navy);border-radius:var(--radius) var(--radius) 0 0;}
+  .profile-photo-wrap{margin:-30px 0 0 20px;width:64px;}
+  .profile-photo{
+    width:64px;height:64px;border-radius:50%;border:3px solid var(--white);
+    object-fit:cover;display:block;background:var(--navy);
+  }
+  .avatar.profile-avatar{width:64px;height:64px;font-size:1.2rem;border:3px solid var(--white);}
+  .profile-body{padding:10px 20px 20px;}
+  .profile-name{margin:8px 0 0;font-size:1.02rem;}
+  .profile-headline{margin:2px 0 0;font-size:.85rem;color:var(--muted);font-weight:700;}
+  .skill-pills{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 2px;}
+  .skill-pill{
+    background:#eef1fb;color:var(--navy);font-size:.7rem;font-weight:700;
+    padding:4px 11px;border-radius:20px;
+  }
+
+  .lock-card{text-align:center;padding:30px 20px;}
+  .lock-card .ico{font-size:2rem;}
+  .lock-card input{max-width:180px;margin:10px auto;text-align:center;letter-spacing:3px;}
+  .unlock-bar{
+    display:flex;justify-content:space-between;align-items:center;
+    background:var(--navy);color:var(--white);padding:14px 20px;
+    border-radius:var(--radius) var(--radius) 0 0;
+  }
+  .unlock-bar h3{color:var(--white);margin:0;}
+  .intern-body{border:1px solid var(--line);border-top:none;border-radius:0 0 var(--radius) var(--radius);padding:22px;background:var(--white);margin-bottom:28px;}
+
+  .conf-row{display:flex;align-items:center;gap:12px;margin:8px 0;}
+  .conf-row label{flex:0 0 190px;margin:0;}
+  .conf-bar{flex:1;height:10px;background:var(--line);border-radius:20px;overflow:hidden;}
+  .conf-bar > span{display:block;height:100%;background:var(--lime);border-radius:20px;}
+
+  .domain{border-left:4px solid var(--blue);padding-left:16px;margin-bottom:20px;}
+  .domain.b{border-color:var(--lime);}
+  .domain.c{border-color:var(--red);}
+  .domain h4{margin:0 0 8px;}
+  .domain ul{margin:0;padding-left:18px;font-size:.9rem;color:#33395c;}
+  .domain ul li{margin-bottom:4px;}
+
+  .contact{
+    display:flex;justify-content:space-between;background:#f0f4ff;border-radius:8px;padding:10px 14px;margin-bottom:8px;font-size:.88rem;
+  }
+  .contact b{color:var(--navy);}
+
+  /* team & unit member cards */
+  .member-card{text-align:center;}
+  .member-card .avatar{margin:0 auto;width:60px;height:60px;font-size:1.1rem;}
+  .member-card h3{margin:12px 0 0;font-size:1.02rem;}
+  .member-role{
+    display:inline-block;margin-top:6px;background:#eef1fb;color:var(--navy);
+    font-size:.7rem;font-weight:700;padding:4px 12px;border-radius:20px;letter-spacing:.2px;
+  }
+  .fact-list{text-align:left;margin-top:18px;}
+  .fact-note{
+    background:#f7f9fd;border-left:3px solid var(--lime);border-radius:0 8px 8px 0;
+    padding:8px 12px;margin-bottom:8px;font-size:.85rem;
+  }
+  .fact-note b{color:var(--navy);display:block;font-size:.68rem;text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px;}
+  .fact-empty{font-size:.82rem;color:var(--muted);text-align:left;margin-top:16px;font-style:italic;}
+  .add-fact{text-align:left;margin-top:14px;border-top:1px solid var(--line);padding-top:12px;}
+  .add-fact summary{cursor:pointer;font-weight:700;color:var(--blue);font-size:.84rem;list-style:none;}
+  .add-fact summary::-webkit-details-marker{display:none;}
+  .add-fact summary::before{content:"+ ";}
+  .add-fact .inner{margin-top:10px;}
+
+  footer{background:var(--navy);color:#c7d0ff;text-align:center;padding:26px 0;font-size:.82rem;}
+  .month-select{max-width:220px;}
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  @media (max-width:840px){.two-col{grid-template-columns:1fr;}}
+  .coach-panel{background:#f5f8fc;border-left:4px solid var(--blue);border-radius:0 var(--radius) var(--radius) 0;padding:18px;}
+
+  .subtab-bar{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:20px;}
+  .intern-panel{display:none;}
+  .intern-panel.active{display:block;}
+
+  /* GROW accordion: filled navy header with rotating chevron, matching the coaching hub */
+  .grow-accordion details{
+    border:1px solid var(--line);border-radius:12px;margin-bottom:10px;overflow:hidden;background:var(--white);
+  }
+  .grow-accordion summary{
+    cursor:pointer;padding:13px 16px;font-weight:700;color:var(--white);background:var(--navy);
+    list-style:none;font-size:.9rem;display:flex;align-items:center;gap:10px;
+  }
+  .grow-accordion summary::-webkit-details-marker{display:none;}
+  .grow-accordion summary::before{content:"▶";display:inline-block;transition:transform .2s ease;flex-shrink:0;}
+  .grow-accordion details[open] summary::before{transform:rotate(90deg);}
+  .grow-accordion .inner{padding:16px;}
+  .grow-accordion .inner p{margin-top:0;font-size:.88rem;}
+  .grow-accordion .inner ul{margin:6px 0 14px;padding-left:18px;font-size:.85rem;color:#33395c;}
+  .grow-accordion .inner ul li{margin-bottom:4px;}
+
+  /* needs analysis table */
+  .needs-table{width:100%;border-collapse:collapse;font-size:.85rem;margin-bottom:14px;}
+  .needs-table th,.needs-table td{padding:9px 8px;border-bottom:1px solid var(--line);text-align:left;}
+  .needs-table th{color:var(--navy);font-size:.78rem;text-transform:uppercase;letter-spacing:.5px;}
+  .rating-radios label{display:inline-flex;align-items:center;gap:3px;margin-right:10px;font-weight:400;font-size:.8rem;color:var(--ink);}
+
+  /* reflection journal */
+  .journal-entry{
+    border:1px solid var(--line);border-radius:10px;padding:14px;margin-bottom:12px;background:var(--white);
+  }
+  .journal-entry .je-date{font-weight:700;color:var(--muted);font-size:.78rem;}
+  .journal-entry .je-tags{margin:8px 0 0;}
+  .journal-entry .je-tags span{
+    display:inline-block;background:#e1effa;color:var(--blue);font-size:.7rem;font-weight:600;
+    padding:2px 10px;border-radius:20px;margin-right:4px;
+  }
+
+  @media print{
+    nav.tabs,.btn,.lock-card,.subtab-bar{display:none !important;}
+    section.page{display:block !important;}
+    .intern-panel{display:block !important;}
+  }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <span class="eyebrow">CTLI · Programme Design &amp; Development Unit · WCED</span>
+    <h1>PDD Digital Hub for New Interns</h1>
+    <p class="sub">A digital induction and development space for interns joining the Programme Design and Development Unit. Built on the GROW coaching model, this hub grows with you from your first day through every function you'll work in.</p>
+  </div>
+</header>
+
+<nav class="tabs">
+  <div class="wrap" id="tabBar">
+    <button data-page="home" class="active">🏠 Home</button>
+    <button data-page="team">👥 Meet the Team</button>
+    <button data-page="aboutyou">✍️ About You</button>
+    <button data-page="interns">🔒 Intern Spaces</button>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <!-- HOME -->
+  <section class="page active" id="home">
+    <div class="card hero">
+      <h2>Welcome to the PDD Unit</h2>
+      <p>This hub is your home base for the internship. Once you're unlocked into your own private space, you'll move through induction and the different functions of the unit, from admin and the LMS through to creative design and course development, all in one place. Everything you need to get oriented, reflect on your progress and check in with your coach lives inside your Intern Space.</p>
+    </div>
+
+    <div class="card">
+      <h2>Our theoretical basis: the GROW model</h2>
+      <p>Your development through this internship is guided by the GROW coaching model. Each month, in your private space, you'll work through these four steps with your coach to reflect on how far you've come and what's next.</p>
+      <div class="grow-grid">
+        <div class="grow-card goal"><h3>🎯 Goal</h3><p>What do you want to achieve in this function, this month?</p></div>
+        <div class="grow-card reality"><h3>🔍 Reality</h3><p>Where are you right now, honestly? What can you already do?</p></div>
+        <div class="grow-card options"><h3>💡 Options</h3><p>What support, people or resources could help you grow?</p></div>
+        <div class="grow-card way"><h3>🚀 Way Forward</h3><p>What will you actually do before your next check-in?</p></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>What's inside your Intern Space</h2>
+      <div class="grid grid-4">
+        <div class="task"><div class="t-body"><strong>🧭 Induction</strong><span>Meet the unit, the team and how PDD fits into CTLI and WCED.</span></div></div>
+        <div class="task"><div class="t-body"><strong>📋 Administration</strong><span>Learn the admin functions that keep the unit running.</span></div></div>
+        <div class="task"><div class="t-body"><strong>💻 LMS Basics</strong><span>Get comfortable finding your way around Moodle.</span></div></div>
+        <div class="task"><div class="t-body"><strong>🎨 Creative Design</strong><span>Explore brand, course development and project operations.</span></div></div>
+      </div>
+      <p style="margin-top:14px;">Head to your private <strong>Intern Space</strong> and pick which function you're busy with each month. The reference material, tasks and knowledge tasks for that function all live there, alongside your GROW planner, journal and progress dashboard.</p>
+    </div>
+  </section>
+
+  <!-- MEET THE TEAM -->
+  <section class="page" id="team">
+    <div class="card">
+      <h2>Meet the PDD Team</h2>
+      <p>Before you dive into the work, get to know the people you'll be working alongside. Have a look at each team member's LinkedIn or other professional profile and add one professional fact about them below, something that will help the rest of the team see you've done your homework. Each of the four of you adds your own entry, so pick your name before you save.</p>
+    </div>
+    <div class="grid grid-2" id="teamGrid"></div>
+
+    <div class="card">
+      <h2>The Wider CTLI Team</h2>
+      <p>PDD is one business unit within CTLI, the Cape Teaching and Leadership Institute. Visit the <a href="https://wcedctli.westerncape.gov.za/" target="_blank" rel="noopener">CTLI website</a> and find out what each of the other business units actually does. Add what you find below, pick your name first so we know who contributed what.</p>
+    </div>
+    <div class="grid grid-2" id="ctliUnitsGrid"></div>
+
+    <div class="card">
+      <h3>Activity: Review the CTLI website</h3>
+      <p>While you're on the <a href="https://wcedctli.westerncape.gov.za/" target="_blank" rel="noopener">CTLI website</a>, have a proper look around, the navigation, the content, how easy it is to find courses or contact details, anything that feels outdated or broken. Note what you think could be improved.</p>
+      <div id="websiteFeedbackList"></div>
+      <details class="add-fact">
+        <summary>Add your feedback</summary>
+        <div class="inner">
+          <label>Who are you?</label>
+          <select id="websiteWho" onchange="loadOwnWebsiteFeedback()">
+            <option value="">Choose your name</option>
+          </select>
+          <label>What I'd improve on the CTLI website</label>
+          <textarea id="websiteFeedback" placeholder="What would you change or improve, and why?"></textarea>
+          <button class="btn" onclick="saveWebsiteFeedback()">💾 Save my feedback</button>
+          <span class="status" id="websiteStatus"></span>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ABOUT YOU -->
+  <section class="page" id="aboutyou">
+    <div class="card">
+      <h2>About You</h2>
+      <p>This is your space to introduce yourself to the team, styled a bit like a LinkedIn profile. Fill in your own card below so we know a bit more about who you are, how you like to work and anything else you'd like us to know. This board is visible to the whole PDD team.</p>
+      <p style="font-size:.85rem;color:#4a5170;">A note on photos: this hub can't accept an uploaded file directly, but you can paste a link to a photo of yourself (from Google Photos, Google Drive set to "anyone with the link", LinkedIn, etc) and it'll show as your profile picture. Leave it blank and your initials will show instead.</p>
+    </div>
+    <div class="grid grid-2" id="internIntroGrid"></div>
+  </section>
+
+  <!-- INTERN SPACES -->
+  <section class="page" id="interns">
+    <div class="card">
+      <h2>🔒 Intern Spaces</h2>
+      <p>Each intern has a private, monthly upskilling space here. Enter your code to open yours. Your coach can add their reflection alongside yours in the same space.</p>
+    </div>
+    <div class="grid grid-2" id="internLockGrid"></div>
+  </section>
+
+</main>
+
+<footer>
+  PDD Digital Hub for New Interns · Programme Design and Development Unit · CTLI · WCED<br>
+  Built on the GROW coaching model
+</footer>
+
+<script>
+/* ---------- data ---------- */
+const TEAM = [
+  {slug:'anita', name:'Anita van Vuuren', role:'Unit Head · CES'},
+  {slug:'marchelle', name:'Marchelle Fester', role:'Process Manager · DCES'},
+  {slug:'kurt', name:'Kurt Minnaar', role:'Creative Manager · DCES'},
+  {slug:'gizelle', name:'Gizelle Simpson', role:'Creative Manager · DCES'},
+  {slug:'gershwin', name:'Gershwin Knozer', role:'Programme Design and Development, SES'},
+  {slug:'david', name:'David Oliphant', role:'ICT Manager'},
+  {slug:'bomikazi', name:'Bomikazi Majikijela', role:'Office Manager · previously a PDD Intern'}
+];
+
+/* Other CTLI business units, from wcedctli.westerncape.gov.za, PDD is our own unit so it's left out here */
+const CTLI_UNITS = [
+  {slug:'tpi', name:'Teaching Practice Improvement'},
+  {slug:'leadership', name:'Leadership Academy'},
+  {slug:'prof-dev', name:'Professional Development'},
+  {slug:'support', name:'Support Services'},
+  {slug:'edulis', name:'EDULIS'}
+];
+
+const INTERNS = [
+  {slug:'tamia', name:'Tamia Theo', code:'1010'},
+  {slug:'aphi', name:'Aphiwokuhle Mzuzu', code:'2020'},
+  {slug:'jessica', name:'Jessica Josias', code:'3030'},
+  {slug:'lusindiso', name:'Lusindiso Sawula', code:'4040'}
+];
+
+const FUNCTIONS = [
+  {key:'induction', label:'Induction'},
+  {key:'admin', label:'Administration'},
+  {key:'lms', label:'LMS Administration'},
+  {key:'creative', label:'Creative Design'}
+];
+
+const INDUCTION_TASKS = [
+  ['Sign in with HR and receive your intern documentation', 'Complete your paperwork and understand your internship terms.'],
+  ['Get your office tour', 'Find your desk, the meeting rooms, kitchen and where the team sits.'],
+  ['Set up your laptop, email and LMS login', 'Confirm access with the ICT Manager, David Oliphant.'],
+  ['Meet each member of the PDD team', 'Say hello and note who does what, use the Meet the Team page to help.'],
+  ['Meet a few colleagues from other CTLI units', 'Ask your coach to introduce you to people outside PDD, and note what their unit does.'],
+  ['Log in to your WCED Google account', 'Confirm you can access Gmail, Google Drive, Docs, Sheets and Calendar.'],
+  ['Explore the PDD shared Google Drive folders', 'Ask your coach which folders you\'ll need regular access to.'],
+  ['Open Canva and explore the CTLI/PDD templates', 'Look at the folders and templates typically used for course design and events.'],
+  ['Read the unit\'s policies and any onboarding manuals shared with you', 'Ask your coach where to find these.'],
+  ['Set a first goal with your coach', 'Agree on what you\'d like to get out of your first month.']
+];
+
+const ADMIN_TASK_GROUPS = [
+  [
+    ['Find the staff register template and see how it\'s kept up to date', 'Ask where the register file is and what "clean" looks like before it\'s scanned in each month.'],
+    ['Shadow the process team verifying a leave application', 'Watch how a leave form is checked against dates, days, name and signature before it goes to the tracking sheet.'],
+    ['Ask Gaironesa Daniels how intern leave queries are handled', 'This differs slightly from how officials\' leave is processed.'],
+    ['Look at the internal leave tracking sheet', 'Ask to be shown how entries are logged and updated once a form is approved.']
+  ],
+  [
+    ['Ask to see how a new monthly timesheet is set up', 'Find out how it\'s checked against the staff register and leave records before it\'s sent for signing.'],
+    ['Find out who signs off timesheets and when they\'re due', 'Timesheets go to Gizelle for signing and are due to Margo Haubt by the 15th of each month.'],
+    ['Help Marchelle and Gizelle with intern onboarding paperwork when asked', 'This usually means uploading supporting documents and job descriptions.'],
+    ['Ask where off-boarding letters are filed', 'Completion, resignation and termination letters each have their own folder and need to reach Gaironesa, Margo and Anita.']
+  ],
+  [
+    ['Find out what documents a new CDT needs to submit', 'ID, qualifications, SACE registration, bank form, proof of account and SARS confirmation.'],
+    ['Shadow a manager preparing a CDT payment claim', 'Notice how it\'s checked against the profile sheet and the verification and tracking sheet.'],
+    ['Learn the route a claim takes before payment', 'Manager, then Admin, then Marchelle, then Anita, then the Director, then Admin again.']
+  ],
+  [
+    ['Ask Lee-Ann Reynolds how travel claims work for officials', 'Note how a claim is verified and logged before it\'s routed for signature.'],
+    ['Shadow a requisition being logged and routed', 'Ask who confirms the BAS codes if you\'re ever unsure, usually Anita, Carolle or Brandon.'],
+    ['Find out who issues the requisition number', 'That\'s Brandon, and it\'s filled in by hand once the pack is confirmed correct.']
+  ],
+  [
+    ['Learn how goods received are checked before an invoice is signed', 'Items and quantities are checked against the original requisition first.'],
+    ['Understand the difference between goods received and services received invoices', 'Each has its own stamp, certification step and filing process.'],
+    ['Ask about the asset management system', 'Find out how file numbers need to line up across the tracking sheet, the asset system and the physical files.']
+  ],
+  [
+    ['Learn how a catering request is submitted', 'Requests go to Brandon or Mandy at least two working days in advance.'],
+    ['Find out how venue bookings are handled', 'Most requests go through Reception, except EDULIS venues which go through Lynette.'],
+    ['Shadow how an internal memo or submission is packaged and routed', 'Notice the checks for templates, annexures, proofreading and the IMS number before it\'s sent on route.']
+  ]
+];
+
+const LMS_TASKS = [
+  ['Log in to Connect@CTLI with your intern account', ''],
+  ['Open a course from the course list and explore its layout', ''],
+  ['Find the Participants list for a course', 'Notice the difference between the Student and Teacher roles.'],
+  ['Practise enrolling a test user into a course', 'Ask your mentor for a safe course to practise in.'],
+  ['Find where you\'d upload a file or resource in a course', 'You don\'t need to upload anything yet, just find where you would.'],
+  ['Ask your LMS mentor to walk you through one basic report', '']
+];
+
+const CREATIVE_TASKS = [
+  ['Look at the CTLI/WCED brand guidelines', 'Understand the colours, fonts, logo rules and tone before you design anything.'],
+  ['Review a conference or event brief', 'See what goes into designing materials like banners, programmes and signage.'],
+  ['Look at a course in its draft and design phases', 'Ask a creative manager to show you a course before and after it\'s built.'],
+  ['Find the Resource Creation Sheet and one example Snippet', ''],
+  ['Open Canva and explore one existing course template', ''],
+  ['Watch how a course is populated on Moodle', 'You\'re observing for now, not editing, unless your mentor says otherwise.'],
+  ['See an example of H5P interactive content in a course', ''],
+  ['Ask about conditions and restrictions used in a course', 'These control what learners can see and when.'],
+  ['Ask what quality assurance checks happen before a course goes live', ''],
+  ['Find where onboarding manuals and guides are kept', '']
+];
+
+/* task lists and knowledge tasks used inside each intern's own space */
+const FUNCTION_TASK_SOURCES = {
+  induction: {type:'flat', tasks: INDUCTION_TASKS},
+  admin: {type:'grouped', groups: ADMIN_TASK_GROUPS, groupTitles: [
+    'Registers & leave','Timesheets & onboarding / off-boarding','Contracts & CDT payments',
+    'Travel claims & requisitions','Invoices & asset management','Events, venues & internal memos'
+  ]},
+  lms: {type:'flat', tasks: LMS_TASKS},
+  creative: {type:'flat', tasks: CREATIVE_TASKS}
+};
+
+const KNOWLEDGE_TASKS = {
+  induction: {
+    prompt: 'Find the full name and designation of everyone on the PDD team, and their email address if you can find it.',
+    placeholder: 'Name, designation, email address...'
+  },
+  admin: {
+    prompt: 'Find the email addresses and designations of the contacts listed below.',
+    placeholder: 'e.g. Abraham Phagon, WCED Requisitions and Procurement, email address...'
+  },
+  lms: {
+    prompt: 'Find out who to contact if you get stuck on the LMS, and note their name, designation and how to reach them.',
+    placeholder: 'Name, designation, email or contact details...'
+  },
+  creative: {
+    prompt: 'Find out where the CTLI/WCED brand guidelines are kept, and who to ask for brand assets like logos or templates.',
+    placeholder: 'Where it\'s kept, and who to contact...'
+  }
+};
+
+/* Reference material for each function, rendered inside each intern's Monthly Plan tab */
+const FUNCTION_REFERENCE = {
+  induction: (slug)=>`
+    <div class="card">
+      <p>The Programme Design and Development Unit sits within CTLI, the Cape Teaching and Leadership Institute, in the Western Cape Education Department. PDD designs, builds and maintains the online and blended learning courses used across WCED, from concept and content through to publishing on the LMS.</p>
+      <label>How PDD is structured</label>
+      <div class="grid grid-2">
+        <div class="contact"><span>Unit Head, CES</span><b>Anita van Vuuren</b></div>
+        <div class="contact"><span>Process Manager, DCES</span><b>Marchelle Fester</b></div>
+        <div class="contact"><span>Creative Manager · DCES</span><b>Kurt Minnaar</b></div>
+        <div class="contact"><span>Creative Manager · DCES</span><b>Gizelle Simpson</b></div>
+        <div class="contact"><span>Programme Design and Development, SES</span><b>Gershwin Knozer</b></div>
+        <div class="contact"><span>ICT Manager</span><b>David Oliphant</b></div>
+        <div class="contact"><span>Office Manager</span><b>Bomikazi Majikijela</b></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h4 style="margin-top:0;">Beyond PDD: the wider CTLI team</h4>
+      <p style="font-size:.9rem;">PDD is one unit within CTLI. There are other units working alongside PDD, each with their own focus. Find out what those units actually do, not just who's in them, so you understand how PDD's work connects to the rest of the Institute. Ask your coach to introduce you to colleagues in other CTLI units.</p>
+      <label>What each other unit does</label>
+      <p style="font-size:.85rem;color:#4a5170;margin-top:-6px;">For each unit you find out about, note its name, what it's responsible for, and who you spoke to.</p>
+      <textarea id="ctliTeamNotes-${slug}" placeholder="e.g. Unit name: what they do, who you spoke to..."></textarea>
+      <button class="btn outline" onclick="saveCtliNotes('${slug}')">💾 Save</button>
+      <span class="status" id="ctliTeamStatus-${slug}"></span>
+    </div>
+
+    <div class="card">
+      <h4 style="margin-top:0;">Your toolkit</h4>
+      <p style="font-size:.9rem;">You'll use two sets of tools day to day. Google Suite (Gmail, Drive, Docs, Sheets and Calendar) is where most of PDD's admin and shared work happens. Canva is used for design work, from course graphics to event materials.</p>
+    </div>
+
+    <div class="card">
+      <h4 style="margin-top:0;">🎓 First month learning: 3 free online courses</h4>
+      <p style="font-size:.9rem;">Within your first month, complete three free online courses. One is compulsory, the Google Digital Garage <strong>Fundamentals of Digital Marketing</strong> course. Choose the other two yourself, pick whatever you're genuinely interested in.</p>
+      <div class="contact">
+        <span>Course 1 (compulsory) · Google Digital Garage: Fundamentals of Digital Marketing</span>
+        <a href="https://grow.google/intl/ssa/programmes" target="_blank" rel="noopener">Open</a>
+      </div>
+      <label style="display:flex;align-items:center;gap:8px;"><input type="checkbox" id="course1Done-${slug}"> I've completed this course</label>
+
+      <label style="margin-top:16px;">Course 2 (your choice)</label>
+      <input type="text" id="course2Name-${slug}" placeholder="Course name">
+      <input type="text" id="course2Link-${slug}" placeholder="Link to the course (optional)" style="margin-top:6px;">
+      <label style="display:flex;align-items:center;gap:8px;margin-top:6px;"><input type="checkbox" id="course2Done-${slug}"> Completed</label>
+
+      <label style="margin-top:16px;">Course 3 (your choice)</label>
+      <input type="text" id="course3Name-${slug}" placeholder="Course name">
+      <input type="text" id="course3Link-${slug}" placeholder="Link to the course (optional)" style="margin-top:6px;">
+      <label style="display:flex;align-items:center;gap:8px;margin-top:6px;"><input type="checkbox" id="course3Done-${slug}"> Completed</label>
+
+      <button class="btn outline" onclick="saveCourses('${slug}')">💾 Save my courses</button>
+      <span class="status" id="coursesStatus-${slug}"></span>
+    </div>
+  `,
+  admin: (slug)=>`
+    <div class="card">
+      <p>The tasks below are built around the <a href="https://docs.google.com/document/d/12ei2z6jmA4XnAxvXt0FREFC6nlnISLMkhT_M7vMZbsg/edit?tab=t.0" target="_blank" rel="noopener">Office Manager Intern: The What and the Where</a> document. Read through it to build your understanding of who to go to for what.</p>
+      <label>Know your contacts</label>
+      <div class="contact"><span>WCED Requisitions and Procurement</span><b>Abraham Phagon</b></div>
+      <div class="contact"><span>Invoices</span><b>Lionel Abdullah</b></div>
+      <div class="contact"><span>Petty cash invoices</span><b>Lincoln Mitchell</b></div>
+      <div class="contact"><span>Leave forms and leave summaries (officials)</span><b>Francois Solomons</b></div>
+      <div class="contact"><span>Leave queries (interns)</span><b>Gaironesa Daniels</b></div>
+      <div class="contact"><span>HR, salary package and GHES registration</span><b>Faizel Roos</b></div>
+      <div class="contact"><span>Travel claims</span><b>Lee-Ann Reynolds</b></div>
+      <div class="contact"><span>Accommodation request enquiries</span><b>Khalila Aziz</b></div>
+    </div>
+    <div class="card">
+      <label>Quick links</label>
+      <p style="font-size:.85rem;color:#4a5170;margin-top:-6px;">Ask your coach for access if any of these aren't shared with you yet.</p>
+      <div class="grid grid-2" style="gap:8px;">
+        <div class="contact"><span>Verification &amp; tracking sheet</span><a href="https://docs.google.com/spreadsheets/d/1iDv_qB9XbaPj-szep4kqRSE2fJA0Od7imhZA8PmLa60/edit?usp=drive_link" target="_blank" rel="noopener">Open</a></div>
+        <div class="contact"><span>Asset management system</span><a href="https://docs.google.com/spreadsheets/d/1i2x6Ny0mVq31trez18_gN0_T6Sko4J6zcrsCVjC6G3Q/edit?usp=drive_link" target="_blank" rel="noopener">Open</a></div>
+        <div class="contact"><span>Route forms</span><a href="https://drive.google.com/drive/folders/13GUMt8Y-7USMpycPMiGBoZY0wKpPSxj2?usp=drive_link" target="_blank" rel="noopener">Open</a></div>
+        <div class="contact"><span>Cover pages</span><a href="https://drive.google.com/drive/folders/18lvDtEHgRpF7KPGslOTR4GJJvi9mk_CA?usp=drive_link" target="_blank" rel="noopener">Open</a></div>
+        <div class="contact"><span>Submission front page templates</span><a href="https://drive.google.com/drive/u/3/folders/1SfZYJswABQVIHFf0pizWpPlXrVYiPHgG" target="_blank" rel="noopener">Open</a></div>
+        <div class="contact"><span>Leave policy</span><a href="https://drive.google.com/drive/folders/1o-CdhQL6RLpd3QgV9RbmNbzEwuA9W0I2?usp=drive_link" target="_blank" rel="noopener">Open</a></div>
+      </div>
+    </div>
+  `,
+  lms: (slug)=>`
+    <div class="card">
+      <p>No Moodle experience? No problem. These are the basic, low-risk tasks we ask every new intern to try on Connect@CTLI before moving on to anything more advanced.</p>
+    </div>
+  `,
+  creative: (slug)=>`
+    <div class="card">
+      <p>This function covers three domains. Work through each one at a pace your coach agrees with you, you won't be expected to master all of this at once.</p>
+      <div class="domain a">
+        <h4>Domain A · Creative Design</h4>
+        <ul>
+          <li>Understand the brand: WCED and CTLI colours, fonts, logo use and tone</li>
+          <li>Conferences &amp; events: helping design materials such as banners, programmes and signage</li>
+        </ul>
+      </div>
+      <div class="domain b">
+        <h4>Domain B · Course Development Workflow</h4>
+        <ul>
+          <li>Course draft &amp; design phases</li>
+          <li>Snippets &amp; the Resource Creation Sheet</li>
+          <li>Canva</li>
+          <li>Moodle: populating courses</li>
+          <li>H5P interactive content</li>
+          <li>Conditions &amp; restrictions</li>
+          <li>Quality assurance</li>
+          <li>Onboarding, manuals &amp; guides</li>
+        </ul>
+      </div>
+      <div class="domain c">
+        <h4>Domain C · Project Management &amp; Operations</h4>
+        <ul>
+          <li>Exam admin &amp; print documentation</li>
+          <li>Procurement</li>
+          <li>Claims &amp; payments</li>
+          <li>Understanding the units</li>
+        </ul>
+      </div>
+    </div>
+  `
+};
+
+/* GROW Planner content, one accordion section per GROW step, used inside each intern's space */
+/* Development Needs Analysis: each function broken down into things that can actually be rated */
+const NEEDS_COMPETENCIES = [
+  { group:'induction', groupLabel:'Induction', items:[
+    {key:'ctli-teams', label:'Knowing CTLI and its wider teams'},
+    {key:'pdd-team', label:'Knowing the PDD team and their roles'},
+    {key:'google-suite', label:'Using Google Suite (Gmail, Drive, Docs, Sheets, Calendar)'},
+    {key:'canva-basics', label:'Finding your way around Canva'}
+  ]},
+  { group:'admin', groupLabel:'Administration', items:[
+    {key:'registers-leave', label:'Registers & leave processes'},
+    {key:'timesheets-onboarding', label:'Timesheets & onboarding / off-boarding'},
+    {key:'contracts-payments', label:'Contracts & CDT payments'},
+    {key:'travel-requisitions', label:'Travel claims & requisitions'},
+    {key:'invoices-assets', label:'Invoices & asset management'},
+    {key:'events-memos', label:'Events, venues & internal memos'}
+  ]},
+  { group:'lms', groupLabel:'LMS Administration', items:[
+    {key:'lms-navigation', label:'Logging in and finding your way around Connect@CTLI'},
+    {key:'lms-participants', label:'Enrolling and managing participants'},
+    {key:'lms-resources', label:'Adding resources and activities to a course'},
+    {key:'lms-support', label:'Basic troubleshooting and support'}
+  ]},
+  { group:'creative', groupLabel:'Creative Design', items:[
+    {key:'brand', label:'Understanding the CTLI/WCED brand'},
+    {key:'events-design', label:'Designing for conferences & events'},
+    {key:'course-workflow', label:'Course development workflow (Canva, Moodle, H5P)'},
+    {key:'pm-operations', label:'Project management & operations'}
+  ]}
+];
+
+const GROW_SECTIONS = [
+  {
+    key:'goal', icon:'🎯', title:'GOAL — What do you want to achieve?',
+    intro: (name)=> name + ', take a moment to think about what success looks like for you by the end of this internship.',
+    consider: [
+      'Which functions do you most want to grow in?',
+      'What would successful performance look like in each function?',
+      'What would you like to achieve by the end of your internship?',
+      'Which tasks do you want to be able to do independently?'
+    ]
+  },
+  {
+    key:'reality', icon:'🔍', title:'REALITY — Where are you now?',
+    intro: (name)=> name + ', an honest look at where you are right now is one of the most useful things you can do.',
+    consider: [
+      'What experience do you already have in each function?',
+      'Which tasks can you already do confidently?',
+      'Which tasks still need guidance or support?',
+      'What came up in your Needs Analysis?'
+    ]
+  },
+  {
+    key:'options', icon:'💡', title:'OPTIONS — How can you develop?',
+    intro: (name)=> name + ', this is your space to think creatively about how you\'ll grow.',
+    consider: [
+      'What support can your coach and the team give you?',
+      'Which practical tasks will build your competence fastest?',
+      'What guides, manuals or people could you learn from?',
+      'Who could you shadow or ask to walk you through something?'
+    ]
+  },
+  {
+    key:'way', icon:'🚀', title:'WAY FORWARD — What will you do?',
+    intro: (name)=> name + ', this is where the plan becomes real.',
+    consider: [
+      'What will you do before your next check-in with your coach?',
+      'What evidence will show your progress?',
+      'What support do you need from your coach?',
+      'How will you know you\'ve succeeded?'
+    ]
+  }
+];
+
+/* ---------- storage helpers ---------- */
+async function saveKV(key, value, shared){
+  try{ await window.storage.set(key, value, !!shared); return true; }
+  catch(e){ console.error('save failed', e); return false; }
+}
+async function loadKV(key, shared){
+  try{ const r = await window.storage.get(key, !!shared); return r ? r.value : ''; }
+  catch(e){ return ''; }
+}
+function flash(el, ok){
+  if(!el) return;
+  el.textContent = ok ? 'Saved ✓' : 'Could not save, try again';
+  el.className = 'status' + (ok ? '' : ' err');
+  setTimeout(()=>{ el.textContent=''; }, 2500);
+}
+
+/* ---------- nav ---------- */
+document.getElementById('tabBar').addEventListener('click', (e)=>{
+  const btn = e.target.closest('button[data-page]');
+  if(!btn) return;
+  document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('section.page').forEach(s=>s.classList.remove('active'));
+  document.getElementById(btn.dataset.page).classList.add('active');
+  window.scrollTo({top:0, behavior:'smooth'});
+});
+
+/* ---------- build team cards ---------- */
+function initials(name){ return name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase(); }
+
+function buildTeam(){
+  const grid = document.getElementById('teamGrid');
+  TEAM.forEach(p=>{
+    const card = document.createElement('div');
+    card.className = 'card member-card';
+    card.innerHTML = `
+      <div class="avatar">${initials(p.name)}</div>
+      <h3>${p.name}</h3>
+      <span class="member-role">${p.role}</span>
+      <div class="fact-list" id="teamFacts-${p.slug}"></div>
+      <details class="add-fact">
+        <summary>Add what you found out</summary>
+        <div class="inner">
+          <label>Who are you?</label>
+          <select id="teamWho-${p.slug}" onchange="loadOwnTeamFact('${p.slug}')">
+            <option value="">Choose your name</option>
+            ${INTERNS.map(i=>`<option value="${i.slug}">${i.name}</option>`).join('')}
+          </select>
+          <label>Your professional fact about ${p.name.split(' ')[0]}</label>
+          <textarea id="team-${p.slug}" placeholder="What did you find out about them?"></textarea>
+          <button class="btn" onclick="saveTeamFact('${p.slug}')">💾 Save my fact</button>
+          <span class="status" id="teamStatus-${p.slug}"></span>
+        </div>
+      </details>
+    `;
+    grid.appendChild(card);
+  });
+}
+async function saveTeamFact(teamSlug){
+  const internSlug = document.getElementById('teamWho-'+teamSlug).value;
+  const statusEl = document.getElementById('teamStatus-'+teamSlug);
+  if(!internSlug){
+    statusEl.textContent = 'Choose your name first';
+    statusEl.className = 'status err';
+    return;
+  }
+  const val = document.getElementById('team-'+teamSlug).value;
+  const ok = await saveKV('team-fact:'+teamSlug+':'+internSlug, val, true);
+  flash(statusEl, ok);
+  renderTeamFactsList(teamSlug);
+}
+async function loadOwnTeamFact(teamSlug){
+  const internSlug = document.getElementById('teamWho-'+teamSlug).value;
+  const box = document.getElementById('team-'+teamSlug);
+  if(!internSlug){ box.value = ''; return; }
+  box.value = await loadKV('team-fact:'+teamSlug+':'+internSlug, true);
+}
+async function renderTeamFactsList(teamSlug){
+  const listEl = document.getElementById('teamFacts-'+teamSlug);
+  const entries = [];
+  for(const i of INTERNS){
+    const v = await loadKV('team-fact:'+teamSlug+':'+i.slug, true);
+    if(v && v.trim()) entries.push({name:i.name, fact:v});
+  }
+  listEl.innerHTML = entries.length
+    ? entries.map(e=>`<div class="fact-note"><b>${e.name}</b>${e.fact}</div>`).join('')
+    : '<p class="fact-empty">No entries yet, be the first to add one.</p>';
+}
+async function loadTeam(){
+  for(const p of TEAM){
+    await renderTeamFactsList(p.slug);
+  }
+}
+
+/* ---------- wider CTLI units (shared, one entry per intern per unit) ---------- */
+function buildCtliUnits(){
+  const grid = document.getElementById('ctliUnitsGrid');
+  CTLI_UNITS.forEach(u=>{
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <h3 style="margin-top:0;">${u.name}</h3>
+      <div class="fact-list" id="unitFacts-${u.slug}" style="margin-top:8px;"></div>
+      <details class="add-fact">
+        <summary>Add what you found out</summary>
+        <div class="inner">
+          <label>Who are you?</label>
+          <select id="unitWho-${u.slug}" onchange="loadOwnUnitFact('${u.slug}')">
+            <option value="">Choose your name</option>
+            ${INTERNS.map(i=>`<option value="${i.slug}">${i.name}</option>`).join('')}
+          </select>
+          <label>What ${u.name} does</label>
+          <textarea id="unit-${u.slug}" placeholder="What did you find out about this unit on the CTLI website?"></textarea>
+          <button class="btn" onclick="saveUnitFact('${u.slug}')">💾 Save my fact</button>
+          <span class="status" id="unitStatus-${u.slug}"></span>
+        </div>
+      </details>
+    `;
+    grid.appendChild(card);
+  });
+}
+async function saveUnitFact(unitSlug){
+  const internSlug = document.getElementById('unitWho-'+unitSlug).value;
+  const statusEl = document.getElementById('unitStatus-'+unitSlug);
+  if(!internSlug){
+    statusEl.textContent = 'Choose your name first';
+    statusEl.className = 'status err';
+    return;
+  }
+  const val = document.getElementById('unit-'+unitSlug).value;
+  const ok = await saveKV('ctli-unit-fact:'+unitSlug+':'+internSlug, val, true);
+  flash(statusEl, ok);
+  renderUnitFactsList(unitSlug);
+}
+async function loadOwnUnitFact(unitSlug){
+  const internSlug = document.getElementById('unitWho-'+unitSlug).value;
+  const box = document.getElementById('unit-'+unitSlug);
+  if(!internSlug){ box.value = ''; return; }
+  box.value = await loadKV('ctli-unit-fact:'+unitSlug+':'+internSlug, true);
+}
+async function renderUnitFactsList(unitSlug){
+  const listEl = document.getElementById('unitFacts-'+unitSlug);
+  const entries = [];
+  for(const i of INTERNS){
+    const v = await loadKV('ctli-unit-fact:'+unitSlug+':'+i.slug, true);
+    if(v && v.trim()) entries.push({name:i.name, fact:v});
+  }
+  listEl.innerHTML = entries.length
+    ? entries.map(e=>`<div class="fact-note"><b>${e.name}</b>${e.fact}</div>`).join('')
+    : '<p class="fact-empty">No entries yet, be the first to add one.</p>';
+}
+async function loadCtliUnits(){
+  for(const u of CTLI_UNITS){
+    await renderUnitFactsList(u.slug);
+  }
+}
+function buildWebsiteWhoOptions(){
+  const sel = document.getElementById('websiteWho');
+  INTERNS.forEach(i=>{
+    const opt = document.createElement('option');
+    opt.value = i.slug;
+    opt.textContent = i.name;
+    sel.appendChild(opt);
+  });
+}
+async function saveWebsiteFeedback(){
+  const internSlug = document.getElementById('websiteWho').value;
+  const statusEl = document.getElementById('websiteStatus');
+  if(!internSlug){
+    statusEl.textContent = 'Choose your name first';
+    statusEl.className = 'status err';
+    return;
+  }
+  const val = document.getElementById('websiteFeedback').value;
+  const ok = await saveKV('ctli-website-feedback:'+internSlug, val, true);
+  flash(statusEl, ok);
+  renderWebsiteFeedbackList();
+}
+async function loadOwnWebsiteFeedback(){
+  const internSlug = document.getElementById('websiteWho').value;
+  const box = document.getElementById('websiteFeedback');
+  if(!internSlug){ box.value = ''; return; }
+  box.value = await loadKV('ctli-website-feedback:'+internSlug, true);
+}
+async function renderWebsiteFeedbackList(){
+  const listEl = document.getElementById('websiteFeedbackList');
+  const entries = [];
+  for(const i of INTERNS){
+    const v = await loadKV('ctli-website-feedback:'+i.slug, true);
+    if(v && v.trim()) entries.push({name:i.name, fact:v});
+  }
+  listEl.innerHTML = entries.length
+    ? entries.map(e=>`<div class="fact-note"><b>${e.name}</b>${e.fact}</div>`).join('')
+    : '<p class="fact-empty">No entries yet, be the first to add one.</p>';
+}
+
+/* ---------- about you (intern intro board, shared) ---------- */
+function buildInternIntro(){
+  const grid = document.getElementById('internIntroGrid');
+  INTERNS.forEach(i=>{
+    const card = document.createElement('div');
+    card.className = 'card profile-card';
+    card.innerHTML = `
+      <div class="profile-banner"></div>
+      <div class="profile-photo-wrap" id="photoWrap-${i.slug}">
+        <div class="avatar profile-avatar">${initials(i.name)}</div>
+      </div>
+      <div class="profile-body">
+        <h3 class="profile-name">${i.name}</h3>
+        <p class="profile-headline" id="headlineDisplay-${i.slug}">Intern · PDD</p>
+        <div class="skill-pills" id="skillsDisplay-${i.slug}"></div>
+
+        <label>Photo link</label>
+        <p style="font-size:.8rem;color:#4a5170;margin-top:-6px;">Paste a link to a photo of you. Leave blank to keep your initials.</p>
+        <input type="text" id="photo-${i.slug}" placeholder="https://...">
+
+        <label>Headline</label>
+        <input type="text" id="headline-${i.slug}" placeholder="e.g. BCom student · aspiring instructional designer">
+
+        <label>About me</label>
+        <textarea id="intro-${i.slug}" placeholder="A bit about you: where you're from, what you're studying, how you like to work, a fun fact..."></textarea>
+
+        <label>Skills &amp; interests</label>
+        <p style="font-size:.8rem;color:#4a5170;margin-top:-6px;">Separate with commas, e.g. Canva, public speaking, football</p>
+        <input type="text" id="skills-${i.slug}" placeholder="Canva, public speaking, football">
+
+        <button class="btn" onclick="saveIntro('${i.slug}')">💾 Save my profile</button>
+        <span class="status" id="introStatus-${i.slug}"></span>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+function fallbackPhoto(slug){
+  const intern = INTERNS.find(i=>i.slug===slug);
+  const wrap = document.getElementById('photoWrap-'+slug);
+  if(wrap) wrap.innerHTML = `<div class="avatar profile-avatar">${initials(intern.name)}</div>`;
+}
+function renderProfileDisplay(slug){
+  const intern = INTERNS.find(i=>i.slug===slug);
+  const photoUrl = document.getElementById('photo-'+slug).value.trim();
+  const headline = document.getElementById('headline-'+slug).value.trim();
+  const skills = document.getElementById('skills-'+slug).value.trim();
+
+  const wrap = document.getElementById('photoWrap-'+slug);
+  if(photoUrl){
+    wrap.innerHTML = `<img class="profile-photo" src="${photoUrl}" alt="${intern.name}" onerror="fallbackPhoto('${slug}')">`;
+  } else {
+    wrap.innerHTML = `<div class="avatar profile-avatar">${initials(intern.name)}</div>`;
+  }
+
+  document.getElementById('headlineDisplay-'+slug).textContent = headline || 'Intern · PDD';
+
+  const pillsEl = document.getElementById('skillsDisplay-'+slug);
+  const list = skills ? skills.split(',').map(s=>s.trim()).filter(Boolean) : [];
+  pillsEl.innerHTML = list.map(s=>`<span class="skill-pill">${s}</span>`).join('');
+}
+async function saveIntro(slug){
+  const data = {
+    photoUrl: document.getElementById('photo-'+slug).value,
+    headline: document.getElementById('headline-'+slug).value,
+    bio: document.getElementById('intro-'+slug).value,
+    skills: document.getElementById('skills-'+slug).value
+  };
+  const ok = await saveKV('intern-intro:'+slug, JSON.stringify(data), true);
+  flash(document.getElementById('introStatus-'+slug), ok);
+  renderProfileDisplay(slug);
+}
+async function loadInternIntro(){
+  for(const i of INTERNS){
+    const raw = await loadKV('intern-intro:'+i.slug, true);
+    let data = {photoUrl:'', headline:'', bio:'', skills:''};
+    if(raw){
+      try{ data = JSON.parse(raw); }
+      catch(e){ data.bio = raw; } /* migrate old plain-text bios saved before this update */
+    }
+    document.getElementById('photo-'+i.slug).value = data.photoUrl || '';
+    document.getElementById('headline-'+i.slug).value = data.headline || '';
+    document.getElementById('intro-'+i.slug).value = data.bio || '';
+    document.getElementById('skills-'+i.slug).value = data.skills || '';
+    renderProfileDisplay(i.slug);
+  }
+}
+
+/* ---------- per-intern CTLI team notes (used inside the induction reference block) ---------- */
+async function saveCtliNotes(slug){
+  const val = document.getElementById('ctliTeamNotes-'+slug).value;
+  const ok = await saveKV('ctli-team-notes:'+slug, val, false);
+  flash(document.getElementById('ctliTeamStatus-'+slug), ok);
+}
+async function loadCtliNotes(slug){
+  const v = await loadKV('ctli-team-notes:'+slug, false);
+  const box = document.getElementById('ctliTeamNotes-'+slug);
+  if(box) box.value = v;
+}
+
+/* ---------- per-intern first month courses (used inside the induction reference block) ---------- */
+async function saveCourses(slug){
+  const data = {
+    course1Done: document.getElementById('course1Done-'+slug).checked,
+    course2Name: document.getElementById('course2Name-'+slug).value,
+    course2Link: document.getElementById('course2Link-'+slug).value,
+    course2Done: document.getElementById('course2Done-'+slug).checked,
+    course3Name: document.getElementById('course3Name-'+slug).value,
+    course3Link: document.getElementById('course3Link-'+slug).value,
+    course3Done: document.getElementById('course3Done-'+slug).checked
+  };
+  const ok = await saveKV('first-month-courses:'+slug, JSON.stringify(data), false);
+  flash(document.getElementById('coursesStatus-'+slug), ok);
+}
+async function loadCourses(slug){
+  const raw = await loadKV('first-month-courses:'+slug, false);
+  let data = {course1Done:false, course2Name:'', course2Link:'', course2Done:false, course3Name:'', course3Link:'', course3Done:false};
+  if(raw){ try{ data = JSON.parse(raw); }catch(e){} }
+  document.getElementById('course1Done-'+slug).checked = !!data.course1Done;
+  document.getElementById('course2Name-'+slug).value = data.course2Name || '';
+  document.getElementById('course2Link-'+slug).value = data.course2Link || '';
+  document.getElementById('course2Done-'+slug).checked = !!data.course2Done;
+  document.getElementById('course3Name-'+slug).value = data.course3Name || '';
+  document.getElementById('course3Link-'+slug).value = data.course3Link || '';
+  document.getElementById('course3Done-'+slug).checked = !!data.course3Done;
+}
+
+/* ---------- intern spaces ---------- */
+function buildInternLocks(){
+  const grid = document.getElementById('internLockGrid');
+  INTERNS.forEach(i=>{
+    const wrap = document.createElement('div');
+    wrap.innerHTML = `
+      <div class="card lock-card" id="lock-${i.slug}">
+        <span class="ico">🔒</span>
+        <h3>${i.name}</h3>
+        <p style="font-size:.85rem;color:#4a5170;">Enter your code to open your space.</p>
+        <input type="password" maxlength="4" id="code-${i.slug}" placeholder="Code">
+        <br>
+        <button class="btn" onclick="tryUnlock('${i.slug}')">Unlock</button>
+        <div class="status err" id="lockStatus-${i.slug}"></div>
+      </div>
+      <div id="space-${i.slug}" style="display:none;"></div>
+    `;
+    grid.appendChild(wrap);
+  });
+}
+
+function tryUnlock(slug){
+  const intern = INTERNS.find(i=>i.slug===slug);
+  const input = document.getElementById('code-'+slug).value;
+  if(input === intern.code){
+    document.getElementById('lock-'+slug).style.display = 'none';
+    const spaceEl = document.getElementById('space-'+slug);
+    spaceEl.style.display = 'block';
+    renderInternSpace(slug, spaceEl);
+  } else {
+    document.getElementById('lockStatus-'+slug).textContent = 'That code isn\'t right, try again.';
+  }
+}
+
+function renderInternSpace(slug, container){
+  const intern = INTERNS.find(i=>i.slug===slug);
+  const firstName = intern.name.split(' ')[0];
+  container.innerHTML = `
+    <div class="unlock-bar">
+      <h3>👤 ${intern.name}'s space</h3>
+      <button class="btn outline" style="margin:0;color:#fff;border-color:#fff;" onclick="relock('${slug}')">Lock again</button>
+    </div>
+    <div class="intern-body">
+      <div class="card" style="margin-bottom:20px;">
+        <h3 style="margin-top:0;">Internship dates</h3>
+        <div class="grid grid-2">
+          <div>
+            <label>Start date</label>
+            <input type="date" id="startDate-${slug}">
+          </div>
+          <div>
+            <label>End date</label>
+            <input type="date" id="endDate-${slug}">
+          </div>
+        </div>
+        <button class="btn outline" onclick="saveInternshipDates('${slug}')">💾 Save dates</button>
+        <span class="status" id="datesStatus-${slug}"></span>
+      </div>
+
+      <div class="subtab-bar" id="subtabs-${slug}">
+        <button class="active" data-tab="needs" onclick="switchInternTab('${slug}','needs')">📊 Needs Analysis</button>
+        <button data-tab="grow" onclick="switchInternTab('${slug}','grow')">🎯 GROW Planner</button>
+        <button data-tab="plan" onclick="switchInternTab('${slug}','plan')">📅 Monthly Plan</button>
+        <button data-tab="journal" onclick="switchInternTab('${slug}','journal')">📓 Reflection Journal</button>
+        <button data-tab="progress" onclick="switchInternTab('${slug}','progress')">📈 Progress Dashboard</button>
+        <button data-tab="growth" onclick="switchInternTab('${slug}','growth')">🌱 Personal Growth</button>
+        <button data-tab="reviews" onclick="switchInternTab('${slug}','reviews')">🏁 Reviews</button>
+      </div>
+
+      <div class="intern-panel active" id="panel-needs-${slug}">
+        <h3>📊 Development Needs Analysis</h3>
+        <p style="font-size:.85rem;color:#4a5170;">Rate your starting confidence in each area, 1 = no experience, 5 = fully confident. These are broken down into specific, measurable things rather than whole functions, so they're easier to rate honestly. Add a note if you'd like.</p>
+        <table class="needs-table">
+          <thead><tr><th>Area</th><th>Rating (1–5)</th><th>Notes</th></tr></thead>
+          <tbody>
+          ${NEEDS_COMPETENCIES.map(group=>`
+            <tr><th colspan="3" style="background:#f0f4ff;color:var(--navy);font-size:.78rem;text-transform:uppercase;letter-spacing:.5px;">${group.groupLabel}</th></tr>
+            ${group.items.map(item=>`
+              <tr>
+                <td>${item.label}</td>
+                <td class="rating-radios">
+                  ${[1,2,3,4,5].map(n=>`<label><input type="radio" name="needs-${slug}-${item.key}" value="${n}">${n}</label>`).join('')}
+                </td>
+                <td><input type="text" id="needsNote-${slug}-${item.key}" placeholder="Optional note"></td>
+              </tr>
+            `).join('')}
+          `).join('')}
+          </tbody>
+        </table>
+        <button class="btn" onclick="saveNeedsAnalysis('${slug}')">💾 Save</button>
+        <button class="btn outline" onclick="analyseNeeds('${slug}')">🔍 Analyse Development Needs</button>
+        <span class="status" id="needsStatus-${slug}"></span>
+        <p id="needsInsight-${slug}" style="font-size:.88rem;color:var(--navy);font-weight:700;margin-top:10px;"></p>
+      </div>
+
+      <div class="intern-panel" id="panel-grow-${slug}">
+        <h3>🎯 GROW Coaching Planner</h3>
+        <p><strong>${firstName}, this planner is designed specifically for you.</strong> Use it to think through your internship as a whole, not just this month. Your coach will use this alongside your monthly check-ins. Click each heading to open that section.</p>
+        <div class="grow-accordion">
+          ${GROW_SECTIONS.map(s=>`
+            <details>
+              <summary>${s.icon} ${s.title}</summary>
+              <div class="inner">
+                <p>${s.intro(firstName)}</p>
+                <label style="margin-top:0;">Consider:</label>
+                <ul>${s.consider.map(c=>`<li>${c}</li>`).join('')}</ul>
+                <label>My reflection</label>
+                <textarea id="grow-${s.key}-${slug}"></textarea>
+              </div>
+            </details>
+          `).join('')}
+        </div>
+        <button class="btn gold" onclick="saveGrowPlanner('${slug}')">💾 Save GROW Plan</button>
+        <span class="status" id="growStatus-${slug}"></span>
+      </div>
+
+      <div class="intern-panel" id="panel-plan-${slug}">
+        <h3>📅 Monthly Plan</h3>
+        <label>Month</label>
+        <select class="month-select" id="month-${slug}" onchange="loadInternMonth('${slug}')">
+          ${[1,2,3,4,5,6].map(m=>`<option value="${m}">Month ${m}</option>`).join('')}
+        </select>
+        <label>Function I'm busy with this month</label>
+        <select class="month-select" id="func-${slug}" onchange="onFunctionChange('${slug}')">
+          ${FUNCTIONS.map(f=>`<option value="${f.key}">${f.label}</option>`).join('')}
+        </select>
+        <p style="font-size:.85rem;color:#4a5170;margin:6px 0 0;">This month's focus: <strong id="funcContext-${slug}"></strong></p>
+
+        <div id="internFuncReference-${slug}" style="margin-top:14px;"></div>
+
+        <h4 style="margin-top:18px;">Tasks for this function</h4>
+        <p style="font-size:.85rem;color:#4a5170;margin-top:-6px;">Tick these off as you go, and use the knowledge task at the bottom to record what you find out.</p>
+        <div id="internFuncTasks-${slug}"></div>
+
+        <div class="coach-panel" style="margin-top:20px;">
+          <h3 style="margin-top:0;">🧑‍🏫 Coach reflection</h3>
+          <label>Coach name</label>
+          <input type="text" id="coach-name-${slug}" placeholder="Coach's name">
+          <label>Observations &amp; sign-off</label>
+          <textarea id="coach-notes-${slug}" placeholder="Coach's notes on this month's progress"></textarea>
+        </div>
+
+        <button class="btn gold" onclick="saveInternMonth('${slug}')">💾 Save this month</button>
+        <button class="btn outline" onclick="window.print()">🖨️ Print / save as PDF</button>
+        <span class="status" id="internStatus-${slug}"></span>
+      </div>
+
+      <div class="intern-panel" id="panel-journal-${slug}">
+        <h3>📓 Reflection Journal</h3>
+        <label>Add a new entry</label>
+        <input type="text" id="journalDate-${slug}" placeholder="Date, e.g. 12 September 2026">
+        <textarea id="journalText-${slug}" placeholder="What happened, what you learned, or what you're thinking about..." style="margin-top:8px;"></textarea>
+        <label>Tags</label>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:8px;">
+          ${['Learning','Challenge','Support needed','Progress','Action taken'].map(t=>`
+            <label style="display:flex;align-items:center;gap:5px;font-weight:400;"><input type="checkbox" class="journalTag-${slug}" value="${t}"> ${t}</label>
+          `).join('')}
+        </div>
+        <button class="btn" onclick="addJournalEntry('${slug}')">➕ Add Entry</button>
+        <span class="status" id="journalStatus-${slug}"></span>
+        <div id="journalList-${slug}" style="margin-top:20px;"></div>
+      </div>
+
+      <div class="intern-panel" id="panel-progress-${slug}">
+        <h3>📈 Progress Dashboard</h3>
+        <p style="font-size:.85rem;color:#4a5170;">Update your current confidence for each function whenever it changes, this tracks your growth over the internship.</p>
+        ${FUNCTIONS.map(f=>`
+          <div class="conf-row">
+            <label>${f.label}</label>
+            <input type="range" min="1" max="5" value="1" id="pconf-${slug}-${f.key}" oninput="updateProgressBar('${slug}','${f.key}')">
+            <div class="conf-bar"><span id="pconfbar-${slug}-${f.key}" style="width:20%;"></span></div>
+          </div>
+        `).join('')}
+        <button class="btn" onclick="saveProgressDashboard('${slug}')">💾 Save Progress</button>
+        <span class="status" id="progressStatus-${slug}"></span>
+
+        <h4 style="margin-top:24px;">Monthly plan progress</h4>
+        <table class="needs-table" id="monthProgressTable-${slug}">
+          <thead><tr><th>Month</th><th>Function focus</th><th>Status</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div class="intern-panel" id="panel-growth-${slug}">
+        <h3>🌱 Personal Growth</h3>
+        <p style="font-size:.85rem;color:#4a5170;">This is about your career beyond PDD too. Go and research this yourself, look for tips and tricks that actually resonate with you, then note what you'll use below.</p>
+
+        <h4>Writing a strong CV</h4>
+        <label>Tips and tricks I found that work for me</label>
+        <textarea id="cvTips-${slug}" placeholder="Note the CV writing tips and tricks you researched and want to apply..."></textarea>
+
+        <h4 style="margin-top:20px;">Preparing for interviews</h4>
+        <label>Tips and tricks I found that work for me</label>
+        <textarea id="interviewTips-${slug}" placeholder="Note the interview preparation tips and tricks you researched and want to apply..."></textarea>
+
+        <h4 style="margin-top:20px;">My current CV</h4>
+        <p style="font-size:.85rem;color:#4a5170;margin-top:-6px;">Paste a link to your current CV (Google Drive or Docs), or paste the text of it below.</p>
+        <label>Link to my current CV</label>
+        <input type="text" id="currentCvLink-${slug}" placeholder="https://...">
+        <label>Or paste the text of my current CV</label>
+        <textarea id="currentCvText-${slug}" placeholder="Paste your current CV here..."></textarea>
+
+        <h4 style="margin-top:20px;">My new, improved CV</h4>
+        <p style="font-size:.85rem;color:#4a5170;margin-top:-6px;">Once you've applied what you've learned, add your updated version here.</p>
+        <label>Link to my new CV</label>
+        <input type="text" id="newCvLink-${slug}" placeholder="https://...">
+        <label>Or paste the text of my new CV</label>
+        <textarea id="newCvText-${slug}" placeholder="Paste your improved CV here..."></textarea>
+
+        <button class="btn gold" onclick="saveGrowthSection('${slug}')">💾 Save Personal Growth</button>
+        <span class="status" id="growthStatus-${slug}"></span>
+      </div>
+
+      <div class="intern-panel" id="panel-reviews-${slug}">
+        <h3>🏁 Reviews</h3>
+
+        <h4>Mid-point review</h4>
+        <p style="font-size:.85rem;color:#4a5170;margin-top:-6px;">Around the halfway mark of the internship, pause for a proper check-in, separate from your usual monthly plan, to reflect on the whole experience so far and adjust course if needed.</p>
+        <label>Date of review</label>
+        <input type="date" id="midDate-${slug}">
+        <label>What's going well</label>
+        <textarea id="midGoingWell-${slug}" placeholder="What's working, what you're proud of so far..."></textarea>
+        <label>What needs to change</label>
+        <textarea id="midNeedsChange-${slug}" placeholder="What's been hard, what you'd like to do differently..."></textarea>
+        <label>Coach's mid-point feedback</label>
+        <textarea id="midCoachFeedback-${slug}" placeholder="Coach's observations and feedback at the halfway mark..."></textarea>
+        <button class="btn" onclick="saveMidpointReview('${slug}')">💾 Save mid-point review</button>
+        <span class="status" id="midStatus-${slug}"></span>
+
+        <h4 style="margin-top:28px;padding-top:20px;border-top:1px dashed var(--line);">Final evaluation &amp; exit interview</h4>
+        <p style="font-size:.85rem;color:#4a5170;margin-top:-6px;">At the end of the internship, this is the chance for both of you to reflect on the whole journey, not just the last month.</p>
+        <label>Date of final evaluation</label>
+        <input type="date" id="finalDate-${slug}">
+        <label>What I'm most proud of</label>
+        <textarea id="finalProud-${slug}"></textarea>
+        <label>Skills I've gained</label>
+        <textarea id="finalSkills-${slug}"></textarea>
+        <label>What I'd do differently</label>
+        <textarea id="finalDifferently-${slug}"></textarea>
+        <label>What I'd suggest to improve this internship programme</label>
+        <textarea id="finalSuggestions-${slug}" placeholder="Honest feedback helps future interns, this is your exit interview."></textarea>
+        <label>Coach's final evaluation</label>
+        <textarea id="finalCoachEval-${slug}" placeholder="Coach's overall reflection on the intern's growth and performance..."></textarea>
+        <button class="btn gold" onclick="saveFinalEvaluation('${slug}')">💾 Save final evaluation</button>
+        <button class="btn outline" onclick="window.print()">🖨️ Print / save as PDF</button>
+        <span class="status" id="finalStatus-${slug}"></span>
+      </div>
+    </div>
+  `;
+  loadInternshipDates(slug);
+  loadNeedsAnalysis(slug);
+  loadGrowPlanner(slug);
+  loadInternMonth(slug);
+  loadJournal(slug);
+  loadProgressDashboard(slug);
+  loadMonthProgressTable(slug);
+  loadGrowthSection(slug);
+  loadMidpointReview(slug);
+  loadFinalEvaluation(slug);
+}
+
+function switchInternTab(slug, tab){
+  document.querySelectorAll('#subtabs-'+slug+' button').forEach(b=>{
+    b.classList.toggle('active', b.dataset.tab === tab);
+  });
+  ['needs','grow','plan','journal','progress','growth','reviews'].forEach(t=>{
+    const panel = document.getElementById('panel-'+t+'-'+slug);
+    if(panel) panel.classList.toggle('active', t === tab);
+  });
+}
+
+function relock(slug){
+  document.getElementById('space-'+slug).style.display = 'none';
+  document.getElementById('lock-'+slug).style.display = 'block';
+  document.getElementById('code-'+slug).value = '';
+}
+
+/* ---------- internship dates ---------- */
+async function saveInternshipDates(slug){
+  const data = {
+    start: document.getElementById('startDate-'+slug).value,
+    end: document.getElementById('endDate-'+slug).value
+  };
+  const ok = await saveKV('internship-dates:'+slug, JSON.stringify(data), false);
+  flash(document.getElementById('datesStatus-'+slug), ok);
+}
+async function loadInternshipDates(slug){
+  const raw = await loadKV('internship-dates:'+slug, false);
+  let data = {start:'', end:''};
+  if(raw){ try{ data = JSON.parse(raw); }catch(e){} }
+  document.getElementById('startDate-'+slug).value = data.start || '';
+  document.getElementById('endDate-'+slug).value = data.end || '';
+}
+
+/* ---------- personal growth: CV writing, interview prep, CV documents ---------- */
+async function saveGrowthSection(slug){
+  const data = {
+    cvTips: document.getElementById('cvTips-'+slug).value,
+    interviewTips: document.getElementById('interviewTips-'+slug).value,
+    currentCvLink: document.getElementById('currentCvLink-'+slug).value,
+    currentCvText: document.getElementById('currentCvText-'+slug).value,
+    newCvLink: document.getElementById('newCvLink-'+slug).value,
+    newCvText: document.getElementById('newCvText-'+slug).value
+  };
+  const ok = await saveKV('personal-growth:'+slug, JSON.stringify(data), false);
+  flash(document.getElementById('growthStatus-'+slug), ok);
+}
+async function loadGrowthSection(slug){
+  const raw = await loadKV('personal-growth:'+slug, false);
+  let data = {cvTips:'', interviewTips:'', currentCvLink:'', currentCvText:'', newCvLink:'', newCvText:''};
+  if(raw){ try{ data = JSON.parse(raw); }catch(e){} }
+  document.getElementById('cvTips-'+slug).value = data.cvTips || '';
+  document.getElementById('interviewTips-'+slug).value = data.interviewTips || '';
+  document.getElementById('currentCvLink-'+slug).value = data.currentCvLink || '';
+  document.getElementById('currentCvText-'+slug).value = data.currentCvText || '';
+  document.getElementById('newCvLink-'+slug).value = data.newCvLink || '';
+  document.getElementById('newCvText-'+slug).value = data.newCvText || '';
+}
+
+/* ---------- mid-point review ---------- */
+async function saveMidpointReview(slug){
+  const data = {
+    date: document.getElementById('midDate-'+slug).value,
+    goingWell: document.getElementById('midGoingWell-'+slug).value,
+    needsChange: document.getElementById('midNeedsChange-'+slug).value,
+    coachFeedback: document.getElementById('midCoachFeedback-'+slug).value
+  };
+  const ok = await saveKV('midpoint-review:'+slug, JSON.stringify(data), false);
+  flash(document.getElementById('midStatus-'+slug), ok);
+}
+async function loadMidpointReview(slug){
+  const raw = await loadKV('midpoint-review:'+slug, false);
+  let data = {date:'', goingWell:'', needsChange:'', coachFeedback:''};
+  if(raw){ try{ data = JSON.parse(raw); }catch(e){} }
+  document.getElementById('midDate-'+slug).value = data.date || '';
+  document.getElementById('midGoingWell-'+slug).value = data.goingWell || '';
+  document.getElementById('midNeedsChange-'+slug).value = data.needsChange || '';
+  document.getElementById('midCoachFeedback-'+slug).value = data.coachFeedback || '';
+}
+
+/* ---------- final evaluation & exit interview ---------- */
+async function saveFinalEvaluation(slug){
+  const data = {
+    date: document.getElementById('finalDate-'+slug).value,
+    proud: document.getElementById('finalProud-'+slug).value,
+    skills: document.getElementById('finalSkills-'+slug).value,
+    differently: document.getElementById('finalDifferently-'+slug).value,
+    suggestions: document.getElementById('finalSuggestions-'+slug).value,
+    coachEval: document.getElementById('finalCoachEval-'+slug).value
+  };
+  const ok = await saveKV('final-evaluation:'+slug, JSON.stringify(data), false);
+  flash(document.getElementById('finalStatus-'+slug), ok);
+}
+async function loadFinalEvaluation(slug){
+  const raw = await loadKV('final-evaluation:'+slug, false);
+  let data = {date:'', proud:'', skills:'', differently:'', suggestions:'', coachEval:''};
+  if(raw){ try{ data = JSON.parse(raw); }catch(e){} }
+  document.getElementById('finalDate-'+slug).value = data.date || '';
+  document.getElementById('finalProud-'+slug).value = data.proud || '';
+  document.getElementById('finalSkills-'+slug).value = data.skills || '';
+  document.getElementById('finalDifferently-'+slug).value = data.differently || '';
+  document.getElementById('finalSuggestions-'+slug).value = data.suggestions || '';
+  document.getElementById('finalCoachEval-'+slug).value = data.coachEval || '';
+}
+
+/* ---------- needs analysis ---------- */
+function allNeedsItems(){
+  return NEEDS_COMPETENCIES.flatMap(g=> g.items.map(item=> ({...item, groupLabel: g.groupLabel})));
+}
+async function saveNeedsAnalysis(slug){
+  const data = {ratings:{}, notes:{}};
+  allNeedsItems().forEach(item=>{
+    const checked = document.querySelector('input[name="needs-'+slug+'-'+item.key+'"]:checked');
+    data.ratings[item.key] = checked ? checked.value : '';
+    data.notes[item.key] = document.getElementById('needsNote-'+slug+'-'+item.key).value;
+  });
+  const ok = await saveKV('needs-analysis:'+slug, JSON.stringify(data), false);
+  flash(document.getElementById('needsStatus-'+slug), ok);
+}
+async function loadNeedsAnalysis(slug){
+  const raw = await loadKV('needs-analysis:'+slug, false);
+  let data = {ratings:{}, notes:{}};
+  if(raw){ try{ data = JSON.parse(raw); }catch(e){} }
+  allNeedsItems().forEach(item=>{
+    const val = data.ratings && data.ratings[item.key];
+    if(val){
+      const radio = document.querySelector('input[name="needs-'+slug+'-'+item.key+'"][value="'+val+'"]');
+      if(radio) radio.checked = true;
+    }
+    const noteBox = document.getElementById('needsNote-'+slug+'-'+item.key);
+    if(noteBox) noteBox.value = (data.notes && data.notes[item.key]) || '';
+  });
+}
+function analyseNeeds(slug){
+  const ratings = allNeedsItems().map(item=>{
+    const checked = document.querySelector('input[name="needs-'+slug+'-'+item.key+'"]:checked');
+    return {label: item.label, val: checked ? parseInt(checked.value) : 0};
+  });
+  const rated = ratings.filter(r=>r.val>0);
+  const el = document.getElementById('needsInsight-'+slug);
+  if(!rated.length){
+    el.textContent = 'Rate at least one area first, then analyse.';
+    return;
+  }
+  const lowest = Math.min(...rated.map(r=>r.val));
+  const priorities = rated.filter(r=>r.val===lowest).map(r=>r.label);
+  const shown = priorities.slice(0,3);
+  const extra = priorities.length > 3 ? ', and ' + (priorities.length - 3) + ' more' : '';
+  el.textContent = 'Based on your ratings, ' + shown.join(', ') + extra + (priorities.length > 1 ? ' look like your biggest priorities' : ' looks like your biggest priority') + ' right now. Bring this to your next coaching check-in.';
+}
+
+/* ---------- GROW planner ---------- */
+async function saveGrowPlanner(slug){
+  const data = {};
+  GROW_SECTIONS.forEach(s=>{ data[s.key] = document.getElementById('grow-'+s.key+'-'+slug).value; });
+  const ok = await saveKV('grow-planner:'+slug, JSON.stringify(data), false);
+  flash(document.getElementById('growStatus-'+slug), ok);
+}
+async function loadGrowPlanner(slug){
+  const raw = await loadKV('grow-planner:'+slug, false);
+  let data = {};
+  if(raw){ try{ data = JSON.parse(raw); }catch(e){} }
+  GROW_SECTIONS.forEach(s=>{
+    const box = document.getElementById('grow-'+s.key+'-'+slug);
+    if(box) box.value = data[s.key] || '';
+  });
+}
+
+/* ---------- monthly plan ---------- */
+function updateFunctionLabel(slug){
+  const key = document.getElementById('func-'+slug).value;
+  const fn = FUNCTIONS.find(f=>f.key===key) || FUNCTIONS[0];
+  const ctx = document.getElementById('funcContext-'+slug);
+  if(ctx) ctx.textContent = fn.label;
+}
+function renderFunctionReference(slug, funcKey){
+  const container = document.getElementById('internFuncReference-'+slug);
+  if(!container) return;
+  const build = FUNCTION_REFERENCE[funcKey];
+  container.innerHTML = build ? build(slug) : '';
+  if(funcKey === 'induction'){
+    loadCtliNotes(slug);
+    loadCourses(slug);
+  }
+}
+function onFunctionChange(slug){
+  updateFunctionLabel(slug);
+  const funcKey = document.getElementById('func-'+slug).value;
+  renderFunctionReference(slug, funcKey);
+  renderInternFunctionTasks(slug, funcKey);
+}
+async function saveInternMonth(slug){
+  const month = document.getElementById('month-'+slug).value;
+  const data = {
+    currentFunction: document.getElementById('func-'+slug).value,
+    coachName: document.getElementById('coach-name-'+slug).value,
+    coachNotes: document.getElementById('coach-notes-'+slug).value
+  };
+  const ok = await saveKV('intern-month:'+slug+':'+month, JSON.stringify(data), false);
+  flash(document.getElementById('internStatus-'+slug), ok);
+  loadMonthProgressTable(slug);
+}
+async function loadInternMonth(slug){
+  const month = document.getElementById('month-'+slug).value;
+  const raw = await loadKV('intern-month:'+slug+':'+month, false);
+  let data = {currentFunction: FUNCTIONS[0].key, coachName:'', coachNotes:''};
+  if(raw){ try{ data = JSON.parse(raw); }catch(e){} }
+  document.getElementById('func-'+slug).value = data.currentFunction || FUNCTIONS[0].key;
+  onFunctionChange(slug);
+  document.getElementById('coach-name-'+slug).value = data.coachName || '';
+  document.getElementById('coach-notes-'+slug).value = data.coachNotes || '';
+}
+
+/* ---------- reflection journal ---------- */
+async function addJournalEntry(slug){
+  const dateVal = document.getElementById('journalDate-'+slug).value.trim();
+  const textVal = document.getElementById('journalText-'+slug).value.trim();
+  const statusEl = document.getElementById('journalStatus-'+slug);
+  if(!textVal){
+    statusEl.textContent = 'Write something before adding an entry';
+    statusEl.className = 'status err';
+    return;
+  }
+  const tags = Array.from(document.querySelectorAll('.journalTag-'+slug+':checked')).map(el=>el.value);
+  const raw = await loadKV('journal:'+slug, false);
+  let entries = [];
+  if(raw){ try{ entries = JSON.parse(raw); }catch(e){} }
+  entries.unshift({date: dateVal || new Date().toLocaleDateString('en-ZA'), text: textVal, tags: tags});
+  const ok = await saveKV('journal:'+slug, JSON.stringify(entries), false);
+  flash(statusEl, ok);
+  document.getElementById('journalDate-'+slug).value = '';
+  document.getElementById('journalText-'+slug).value = '';
+  document.querySelectorAll('.journalTag-'+slug).forEach(el=>{ el.checked = false; });
+  renderJournalList(slug, entries);
+}
+async function loadJournal(slug){
+  const raw = await loadKV('journal:'+slug, false);
+  let entries = [];
+  if(raw){ try{ entries = JSON.parse(raw); }catch(e){} }
+  renderJournalList(slug, entries);
+}
+function renderJournalList(slug, entries){
+  const el = document.getElementById('journalList-'+slug);
+  if(!entries.length){
+    el.innerHTML = '<p style="font-size:.82rem;color:#4a5170;">No entries yet.</p>';
+    return;
+  }
+  el.innerHTML = entries.map(e=>`
+    <div class="journal-entry">
+      <div class="je-date">${e.date}</div>
+      <div class="je-tags">${(e.tags||[]).map(t=>'<span>'+t+'</span>').join('')}</div>
+      <div>${e.text}</div>
+    </div>
+  `).join('');
+}
+
+/* ---------- progress dashboard ---------- */
+function updateProgressBar(slug, fnKey){
+  const val = document.getElementById('pconf-'+slug+'-'+fnKey).value;
+  document.getElementById('pconfbar-'+slug+'-'+fnKey).style.width = (val*20)+'%';
+}
+async function saveProgressDashboard(slug){
+  const data = {};
+  FUNCTIONS.forEach(f=>{ data[f.key] = document.getElementById('pconf-'+slug+'-'+f.key).value; });
+  const ok = await saveKV('progress-dashboard:'+slug, JSON.stringify(data), false);
+  flash(document.getElementById('progressStatus-'+slug), ok);
+}
+async function loadProgressDashboard(slug){
+  const raw = await loadKV('progress-dashboard:'+slug, false);
+  let data = {};
+  if(raw){ try{ data = JSON.parse(raw); }catch(e){} }
+  FUNCTIONS.forEach(f=>{
+    const v = data[f.key] || 1;
+    document.getElementById('pconf-'+slug+'-'+f.key).value = v;
+    document.getElementById('pconfbar-'+slug+'-'+f.key).style.width = (v*20)+'%';
+  });
+}
+async function loadMonthProgressTable(slug){
+  const tbody = document.querySelector('#monthProgressTable-'+slug+' tbody');
+  if(!tbody) return;
+  let rows = '';
+  for(let m=1; m<=6; m++){
+    const raw = await loadKV('intern-month:'+slug+':'+m, false);
+    let status = 'Not started';
+    let funcLabel = '—';
+    if(raw){
+      try{
+        const data = JSON.parse(raw);
+        const fn = FUNCTIONS.find(f=>f.key===data.currentFunction);
+        funcLabel = fn ? fn.label : '—';
+        status = data.coachNotes ? 'Reviewed with coach' : 'In progress';
+      }catch(e){}
+    }
+    rows += '<tr><td>Month '+m+'</td><td>'+funcLabel+'</td><td>'+status+'</td></tr>';
+  }
+  tbody.innerHTML = rows;
+}
+
+/* ---------- init ---------- */
+window.addEventListener('DOMContentLoaded', async ()=>{
+  buildTeam();
+  buildCtliUnits();
+  buildWebsiteWhoOptions();
+  buildInternIntro();
+  buildInternLocks();
+
+  await Promise.all([
+    loadTeam(),
+    loadCtliUnits(),
+    renderWebsiteFeedbackList(),
+    loadInternIntro()
+  ]);
+});
+</script>
+</body>
+</html>
