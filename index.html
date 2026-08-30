@@ -193,18 +193,36 @@
   .contact b{color:var(--navy);}
 
   /* team & unit member cards */
-  .member-card{text-align:center;}
+  .member-card{text-align:center;border-top:4px solid var(--line);}
   .member-card .avatar{margin:0 auto;width:60px;height:60px;font-size:1.1rem;}
   .member-card h3{margin:12px 0 0;font-size:1.02rem;}
   .member-role{
     display:inline-block;margin-top:6px;background:#eef1fb;color:var(--navy);
     font-size:.7rem;font-weight:700;padding:4px 12px;border-radius:20px;letter-spacing:.2px;
   }
+  /* colour rotation */
+  .member-card.c-navy{border-top-color:var(--navy);}
+  .member-card.c-blue{border-top-color:var(--blue);}
+  .member-card.c-red{border-top-color:var(--red);}
+  .member-card.c-navy .avatar{background:var(--navy);}
+  .member-card.c-blue .avatar{background:var(--blue);}
+  .member-card.c-red .avatar{background:var(--red);}
+  .member-role.p-gold{background:#fff6d9;color:#8a6900;}
+  .member-role.p-lime{background:#f2f8cf;color:#5c6900;}
+  .member-role.p-blue{background:#e2f3fa;color:var(--blue);}
+  .top-navy{border-top:4px solid var(--navy);}
+  .top-blue{border-top:4px solid var(--blue);}
+  .top-gold{border-top:4px solid var(--gold);}
+  .top-lime{border-top:4px solid var(--lime);}
+  .top-red{border-top:4px solid var(--red);}
   .fact-list{text-align:left;margin-top:18px;}
   .fact-note{
     background:#f7f9fd;border-left:3px solid var(--lime);border-radius:0 8px 8px 0;
     padding:8px 12px;margin-bottom:8px;font-size:.85rem;
   }
+  .fact-note.f-gold{border-left-color:var(--gold);}
+  .fact-note.f-blue{border-left-color:var(--blue);}
+  .fact-note.f-red{border-left-color:var(--red);}
   .fact-note b{color:var(--navy);display:block;font-size:.68rem;text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px;}
   .fact-empty{font-size:.82rem;color:var(--muted);text-align:left;margin-top:16px;font-style:italic;}
   .add-fact{text-align:left;margin-top:14px;border-top:1px solid var(--line);padding-top:12px;}
@@ -331,7 +349,7 @@
     </div>
     <div class="grid grid-2" id="ctliUnitsGrid"></div>
 
-    <div class="card">
+    <div class="card top-red">
       <h3>Activity: Review the CTLI website</h3>
       <p>While you're on the <a href="https://wcedctli.westerncape.gov.za/" target="_blank" rel="noopener">CTLI website</a>, have a proper look around, the navigation, the content, how easy it is to find courses or contact details, anything that feels outdated or broken. Note what you think could be improved.</p>
       <div id="websiteFeedbackList"></div>
@@ -740,14 +758,18 @@ function initials(name){ return name.split(' ').map(w=>w[0]).join('').slice(0,2)
 
 function buildTeam(){
   const grid = document.getElementById('teamGrid');
-  TEAM.forEach(p=>{
+  const avatarColors = ['navy','blue','red'];
+  const pillColors = ['gold','lime','blue'];
+  TEAM.forEach((p,idx)=>{
+    const avatarColor = avatarColors[idx % avatarColors.length];
+    const pillColor = pillColors[idx % pillColors.length];
     const card = document.createElement('div');
-    card.className = 'card member-card';
+    card.className = 'card member-card c-'+avatarColor;
     card.innerHTML = `
       <div class="avatar">${initials(p.name)}</div>
       <h3>${p.name}</h3>
-      <span class="member-role">${p.role}</span>
-      <div class="fact-list" id="teamFacts-${p.slug}"></div>
+      <span class="member-role p-${pillColor}">${p.role}</span>
+      <div class="fact-list" id="teamFacts-${p.slug}" data-accent="${avatarColor}"></div>
       <details class="add-fact">
         <summary>Add what you found out</summary>
         <div class="inner">
@@ -787,13 +809,14 @@ async function loadOwnTeamFact(teamSlug){
 }
 async function renderTeamFactsList(teamSlug){
   const listEl = document.getElementById('teamFacts-'+teamSlug);
+  const accent = listEl.dataset.accent || 'lime';
   const entries = [];
   for(const i of INTERNS){
     const v = await loadKV('team-fact:'+teamSlug+':'+i.slug, true);
     if(v && v.trim()) entries.push({name:i.name, fact:v});
   }
   listEl.innerHTML = entries.length
-    ? entries.map(e=>`<div class="fact-note"><b>${e.name}</b>${e.fact}</div>`).join('')
+    ? entries.map(e=>`<div class="fact-note f-${accent}"><b>${e.name}</b>${e.fact}</div>`).join('')
     : '<p class="fact-empty">No entries yet, be the first to add one.</p>';
 }
 async function loadTeam(){
@@ -805,12 +828,14 @@ async function loadTeam(){
 /* ---------- wider CTLI units (shared, one entry per intern per unit) ---------- */
 function buildCtliUnits(){
   const grid = document.getElementById('ctliUnitsGrid');
-  CTLI_UNITS.forEach(u=>{
+  const accents = ['gold','lime','blue'];
+  CTLI_UNITS.forEach((u,idx)=>{
+    const accent = accents[idx % accents.length];
     const card = document.createElement('div');
-    card.className = 'card';
+    card.className = 'card top-'+accent;
     card.innerHTML = `
       <h3 style="margin-top:0;">${u.name}</h3>
-      <div class="fact-list" id="unitFacts-${u.slug}" style="margin-top:8px;"></div>
+      <div class="fact-list" id="unitFacts-${u.slug}" data-accent="${accent}" style="margin-top:8px;"></div>
       <details class="add-fact">
         <summary>Add what you found out</summary>
         <div class="inner">
@@ -850,13 +875,14 @@ async function loadOwnUnitFact(unitSlug){
 }
 async function renderUnitFactsList(unitSlug){
   const listEl = document.getElementById('unitFacts-'+unitSlug);
+  const accent = listEl.dataset.accent || 'lime';
   const entries = [];
   for(const i of INTERNS){
     const v = await loadKV('ctli-unit-fact:'+unitSlug+':'+i.slug, true);
     if(v && v.trim()) entries.push({name:i.name, fact:v});
   }
   listEl.innerHTML = entries.length
-    ? entries.map(e=>`<div class="fact-note"><b>${e.name}</b>${e.fact}</div>`).join('')
+    ? entries.map(e=>`<div class="fact-note f-${accent}"><b>${e.name}</b>${e.fact}</div>`).join('')
     : '<p class="fact-empty">No entries yet, be the first to add one.</p>';
 }
 async function loadCtliUnits(){
@@ -900,7 +926,7 @@ async function renderWebsiteFeedbackList(){
     if(v && v.trim()) entries.push({name:i.name, fact:v});
   }
   listEl.innerHTML = entries.length
-    ? entries.map(e=>`<div class="fact-note"><b>${e.name}</b>${e.fact}</div>`).join('')
+    ? entries.map(e=>`<div class="fact-note f-red"><b>${e.name}</b>${e.fact}</div>`).join('')
     : '<p class="fact-empty">No entries yet, be the first to add one.</p>';
 }
 
