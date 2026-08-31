@@ -241,6 +241,86 @@
   @media (max-width:840px){.two-col{grid-template-columns:1fr;}}
   .coach-panel{background:#f5f8fc;border-left:4px solid var(--blue);border-radius:0 var(--radius) var(--radius) 0;padding:18px;}
 
+  /* ===== Meet the Team: smaller cards, self-centering last row ===== */
+  .people-grid{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-bottom:18px;}
+  .people-grid > .card{flex:1 1 230px;max-width:250px;margin-bottom:0;}
+  .member-card{padding:16px 14px;}
+  .member-card .avatar{width:48px;height:48px;font-size:.92rem;}
+  .member-card h3{margin:9px 0 0;font-size:.92rem;}
+  .member-card .member-role{font-size:.64rem;padding:3px 10px;margin-top:5px;}
+  .member-card .fact-list{margin-top:12px;}
+  .member-card .fact-note{padding:7px 10px;font-size:.78rem;}
+  .member-card .add-fact{margin-top:10px;padding-top:9px;}
+  .member-card-lead{padding-top:20px;padding-bottom:18px;}
+  .member-card-lead .avatar{width:62px;height:62px;font-size:1.1rem;}
+  .member-card-lead h3{font-size:1.04rem;}
+  .unit-card{padding:16px 18px;}
+  .unit-card h3{font-size:.98rem;}
+
+  /* ===== Induction Programme (merged from Reflective Activities pack) ===== */
+  .induction-panel{display:none;}
+  .induction-panel.active{display:block;}
+  .upskill-panel{display:none;}
+  .upskill-panel.active{display:block;}
+
+  .pill.video{background:#e2f3fa;color:var(--blue);}
+  .pill.article{background:#e6ecff;color:var(--navy);}
+  .pill.guide{background:#f4f9d6;color:#5c6900;}
+  .pill.time{background:#fff6d9;color:#8a6900;}
+
+  ol.qs{list-style:none;margin:14px 0 0;padding:0;counter-reset:q;}
+  ol.qs li{
+    counter-increment:q;position:relative;padding:9px 0 9px 40px;
+    border-bottom:1px solid var(--line);font-size:.92rem;
+  }
+  ol.qs li:last-child{border-bottom:none;}
+  ol.qs li::before{
+    content:counter(q);
+    position:absolute;left:0;top:9px;width:26px;height:26px;border-radius:50%;
+    background:#e6ecff;color:var(--navy);font-weight:700;font-size:.8rem;
+    display:flex;align-items:center;justify-content:center;
+  }
+
+  .resource{
+    background:#f7f9fd;border-left:3px solid var(--blue);border-radius:0 8px 8px 0;
+    padding:12px 14px;margin-bottom:10px;font-size:.9rem;
+  }
+  .resource.b{border-color:var(--lime);}
+  .resource.c{border-color:var(--gold);}
+  .resource.d{border-color:var(--red);}
+  .resource h4{margin:0 0 3px;font-size:.95rem;}
+  .resource h4 a{color:var(--navy);text-decoration:underline;text-underline-offset:3px;}
+  .resource h4 a:hover{color:var(--blue);}
+  .resource p{margin:2px 0 0;color:var(--muted);font-size:.86rem;}
+
+  .rules-card{border-top:4px solid var(--gold);}
+  .rules-card ul{list-style:none;margin:8px 0 0;padding:0;}
+  .rules-card li{padding:7px 0 7px 30px;position:relative;font-size:.92rem;border-bottom:1px solid var(--line);}
+  .rules-card li:last-child{border-bottom:none;}
+  .rules-card li::before{content:"✦";position:absolute;left:4px;color:var(--blue);font-weight:700;}
+
+  ol.steps{list-style:none;margin:10px 0 0;padding:0;counter-reset:s;}
+  ol.steps li{counter-increment:s;position:relative;padding:8px 0 8px 38px;font-size:.92rem;}
+  ol.steps li::before{
+    content:counter(s);
+    position:absolute;left:0;top:8px;width:26px;height:26px;border-radius:50%;
+    background:var(--navy);color:var(--white);font-weight:700;font-size:.8rem;
+    display:flex;align-items:center;justify-content:center;
+  }
+
+  .skill{
+    display:grid;grid-template-columns:30px 1fr;gap:12px;align-items:start;
+    padding:13px 0;border-bottom:1px solid var(--line);
+  }
+  .skill:last-child{border-bottom:none;}
+  .skill input[type="checkbox"]{width:20px;height:20px;margin-top:2px;accent-color:var(--blue);cursor:pointer;}
+  .skill h4{margin:0;font-size:.95rem;color:var(--navy);}
+  .skill p{margin:2px 0 0;font-size:.86rem;color:var(--muted);}
+  .skill a{color:var(--blue);text-decoration:underline;text-underline-offset:3px;font-weight:600;}
+  .skill a:hover{color:var(--navy);}
+
+  .brief{background:#fff6d9;border-left:3px solid var(--gold);border-radius:0 8px 8px 0;padding:12px 14px;margin:14px 0;font-size:.92rem;}
+
   .subtab-bar{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:20px;}
   .intern-panel{display:none;}
   .intern-panel.active{display:block;}
@@ -282,6 +362,8 @@
     nav.tabs,.btn,.lock-card,.subtab-bar{display:none !important;}
     section.page{display:block !important;}
     .intern-panel{display:block !important;}
+    .induction-panel{display:block !important;}
+    .upskill-panel{display:block !important;}
   }
 </style>
 </head>
@@ -303,6 +385,7 @@
     <button data-page="home" class="active">🏠 Home</button>
     <button data-page="team">👥 Meet the Team</button>
     <button data-page="aboutyou">✍️ About You</button>
+    <button data-page="induction">🧭 Induction Programme</button>
     <button data-page="interns">🔒 Intern Spaces</button>
   </div>
 </nav>
@@ -345,14 +428,14 @@
       <h2>Meet the PDD Team</h2>
       <p>Before you dive into the work, get to know the people you'll be working alongside. Have a look at each team member's LinkedIn or other professional profile and add one professional fact about them below, something that will help the rest of the team see you've done your homework. Each of the four of you adds your own entry, so pick your name before you save.</p>
     </div>
-    <div id="teamLeaderGrid" style="max-width:420px;margin:0 auto 18px;"></div>
-    <div class="grid grid-2" id="teamGrid"></div>
+    <div id="teamLeaderGrid" style="max-width:340px;margin:0 auto 18px;"></div>
+    <div class="people-grid" id="teamGrid"></div>
 
     <div class="card">
       <h2>The Wider CTLI Team</h2>
       <p>PDD is one business unit within CTLI, the Cape Teaching and Leadership Institute. Visit the <a href="https://wcedctli.westerncape.gov.za/" target="_blank" rel="noopener">CTLI website</a> and find out what each of the other business units actually does. Add what you find below, pick your name first so we know who contributed what.</p>
     </div>
-    <div class="grid grid-2" id="ctliUnitsGrid"></div>
+    <div class="people-grid" id="ctliUnitsGrid"></div>
 
     <div class="card top-red">
       <h3>Activity: Review the CTLI website</h3>
@@ -382,6 +465,273 @@
       <p style="font-size:.85rem;color:#4a5170;">A note on photos: this hub can't accept an uploaded file directly, but you can paste a link to a photo of yourself (from Google Photos, Google Drive set to "anyone with the link", LinkedIn, etc) and it'll show as your profile picture. Leave it blank and your initials will show instead.</p>
     </div>
     <div class="grid grid-2" id="internIntroGrid"></div>
+  </section>
+
+  <!-- INDUCTION PROGRAMME -->
+  <section class="page" id="induction">
+
+    <div class="subtab-bar" id="inductionSubtabs">
+      <button class="active" data-tab="start" onclick="switchInductionTab('start')">🏠 Start Here</button>
+      <button data-tab="meet" onclick="switchInductionTab('meet')">🎲 Get to Know Each Other</button>
+      <button data-tab="upskill" onclick="switchInductionTab('upskill')">📚 Upskilling 101</button>
+    </div>
+
+    <!-- START HERE -->
+    <div class="induction-panel active" id="induction-start">
+      <div class="card hero">
+        <h2>🧭 Welcome to your Induction Programme</h2>
+        <p>These activities build on each other, so work through them in order. Start with getting to know your fellow interns, then move into Upskilling 101, where you'll build the thinking behind good design, good digital filing, and ten practical Canva skills you'll prove in a design of your own.</p>
+        <div style="margin-top:10px;">
+          <span class="pill time">Activity 1 · Get to know each other · ±30 min</span>
+          <span class="pill time">Activity 2 · Design principles · ±60–75 min</span>
+          <span class="pill time">Activity 3 · Digital filing · ±45–60 min</span>
+          <span class="pill time">Activity 4 · Canva skills · ±2 hours</span>
+        </div>
+      </div>
+
+      <div class="card rules-card">
+        <h2>🤝 Ground rules for the whole programme</h2>
+        <ul>
+          <li><strong>You may assist each other throughout, but you may not do the work for each other.</strong> Explain, demonstrate on your own screen, point at a menu, then let your fellow intern do it themselves.</li>
+          <li>After every activity, ask a fellow intern: <em>"What's one question that could help me extend or improve my reflective notes, or my design?"</em> Note their question and your answer in your Reflection Journal.</li>
+          <li>Every intern completes their own reflective notes and their own Canva design.</li>
+        </ul>
+      </div>
+
+      <div class="grid grid-3">
+        <div class="card top-blue"><h3>✍️ Your journal</h3><p style="font-size:.88rem;margin:0;">Capture your reflections for each activity in the <strong>Reflection Journal</strong> tab of your Intern Space, it mirrors these activities question for question.</p></div>
+        <div class="card top-lime"><h3>🔗 Free resources</h3><p style="font-size:.88rem;margin:0;">Every resource here is free to access, a mix of videos, articles, and guides. Some open on external sites.</p></div>
+        <div class="card top-gold"><h3>🎯 The goal</h3><p style="font-size:.88rem;margin:0;">By the end of this week you'll know your fellow interns, the language of design, a clean filing habit, and ten Canva skills, proven in one design.</p></div>
+      </div>
+    </div>
+
+    <!-- GET TO KNOW EACH OTHER (Activity 1) -->
+    <div class="induction-panel" id="induction-meet">
+      <div class="card hero">
+        <h2>🎲 Activity 1 · Get to know each other</h2>
+        <p style="margin:0 0 6px;"><span class="pill time">±30 minutes · pairs, then rotate</span></p>
+        <p><strong>How to play:</strong> sit in pairs. Take turns drawing a question number (1 to 15) at random, you can't pick your own. Answer honestly; your partner may ask one follow-up. After five questions each, rotate partners and continue. If a question has already been answered for you, draw again.</p>
+      </div>
+
+      <div class="card">
+        <h2>The questions</h2>
+        <ol class="qs">
+          <li>What's the story behind your name, or a nickname you've had?</li>
+          <li>What made you apply for this internship?</li>
+          <li>What's one thing you're genuinely good at that isn't on your CV?</li>
+          <li>Describe your ideal working environment: music or silence? Morning or night?</li>
+          <li>What app, tool, or website could you not live without, and why?</li>
+          <li>What's a skill you're hoping to walk away from this internship with?</li>
+          <li>Who is someone, famous or not, whose work or style you admire?</li>
+          <li>What's the best piece of advice anyone has given you?</li>
+          <li>If you had a free Saturday and no obligations, how would you spend it?</li>
+          <li>What's something that recently made you laugh?</li>
+          <li>Coffee, tea, or something else entirely?</li>
+          <li>What's one thing people often get wrong about you at first?</li>
+          <li>When you have to learn something new, do you watch, read, or just try it?</li>
+          <li>What's a small win from the past month you're proud of?</li>
+          <li>What do you hope this intern group is like by the end of the programme?</li>
+        </ol>
+      </div>
+
+      <div class="coach-panel">
+        <h3>💬 Reflect afterwards</h3>
+        <p>In your Reflection Journal, note: one thing you have in common with another intern, one thing that surprised you, and who you'd go to first for help with a design question, and why.</p>
+      </div>
+    </div>
+
+    <!-- UPSKILLING 101 -->
+    <div class="induction-panel" id="induction-upskill">
+      <div class="card hero">
+        <h2>📚 Upskilling 101</h2>
+        <p>Three activities that build the foundational skills you'll use throughout your internship: how good design works, how to keep your files in order, and ten practical Canva skills you'll prove in a design of your own.</p>
+      </div>
+
+      <div class="subtab-bar" id="upskillSubtabs">
+        <button class="active" data-tab="design" onclick="switchUpskillTab('design')">🎨 Design Principles</button>
+        <button data-tab="filing" onclick="switchUpskillTab('filing')">🗂️ Digital Filing</button>
+        <button data-tab="canva" onclick="switchUpskillTab('canva')">🖌️ Canva Skills</button>
+      </div>
+
+      <!-- DESIGN PRINCIPLES (Activity 2) -->
+      <div class="upskill-panel active" id="upskill-design">
+        <div class="card hero">
+          <h2>🎨 Activity 2 · Elements &amp; principles of design</h2>
+          <p style="margin:0 0 6px;"><span class="pill time">±60–75 minutes · work alone, then compare in pairs</span></p>
+          <p>Work through the four resources below in order. They cover the building blocks of visual and media design, line, shape, colour, texture, space, and the principles that arrange them: balance, contrast, hierarchy, alignment, repetition, proximity, and unity.</p>
+        </div>
+
+        <div class="card">
+          <h2>📚 Resources</h2>
+          <div class="resource">
+            <span class="pill video">Video</span>
+            <h4><a href="https://www.youtube.com/watch?v=YqQx75OPRa0" target="_blank" rel="noopener">Fundamentals of Design</a></h4>
+            <p>A short video introducing the building blocks of design, line, shape, form, texture, and balance, with clear visual examples.</p>
+          </div>
+          <div class="resource b">
+            <span class="pill video">Video</span>
+            <h4><a href="https://www.youtube.com/watch?v=a5KYlHNKQB8" target="_blank" rel="noopener">Layout and Composition</a></h4>
+            <p>Covers the five principles that make a layout work: proximity, white space, alignment, contrast, and repetition.</p>
+          </div>
+          <div class="resource c">
+            <span class="pill video">Video</span>
+            <h4><a href="https://www.youtube.com/watch?v=_2LLXnUdUIc" target="_blank" rel="noopener">Use of Colour</a></h4>
+            <p>An introduction to working with colour, hue, saturation, and value, and how to choose colour combinations that work well together.</p>
+          </div>
+          <div class="resource d">
+            <span class="pill article">Article</span>
+            <h4><a href="https://design.tutsplus.com/articles/the-principles-of-design--cms-33962" target="_blank" rel="noopener">The principles of Design</a></h4>
+            <p>A deeper walkthrough of balance, unity, movement, emphasis, and visual weight, with worked examples of each principle.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>✍️ Reflective questions, write these in your journal</h2>
+          <ol class="qs">
+            <li>In your own words, what is the difference between an <em>element</em> of design and a <em>principle</em> of design? Give one example of each.</li>
+            <li>Which principle (contrast, alignment, repetition, proximity, balance, hierarchy) do you think matters most for the kind of work our unit produces? Why?</li>
+            <li>Find one real design around you, a poster, packaging, or a social media post. Which principles is it using well, and which is it breaking?</li>
+            <li>Which concept from the resources was completely new to you, and how would you explain it to a friend in one sentence?</li>
+            <li>How do you think you'll apply <em>white space</em> in your own Canva design in Activity 4?</li>
+          </ol>
+        </div>
+
+        <div class="coach-panel">
+          <h3>👥 Compare notes with a fellow intern</h3>
+          <p>Swap journals, or read your answers aloud, with one other intern. Where do your definitions differ? Agree together on the <em>three principles</em> you both think are most important, and each add one idea from your partner's notes to your own, credit them by name. Then ask each other: <em>"What one question would extend or improve my notes?"</em></p>
+        </div>
+      </div>
+
+      <!-- DIGITAL FILING (Activity 3) -->
+      <div class="upskill-panel" id="upskill-filing">
+        <div class="card hero">
+          <h2>🗂️ Activity 3 · Data management &amp; digital filing</h2>
+          <p style="margin:0 0 6px;"><span class="pill time">±45–60 minutes · work alone, then compare in pairs</span></p>
+          <p>Messy files cost teams hours. These three resources cover how to name files, structure folders, and manage versions so that anyone on the team can find anything, including you, six months from now.</p>
+        </div>
+
+        <div class="card">
+          <h2>📚 Resources</h2>
+          <div class="resource">
+            <span class="pill guide">Guide</span>
+            <h4><a href="https://datamanagement.hms.harvard.edu/plan-design/file-naming-conventions" target="_blank" rel="noopener">Harvard Medical School — File Naming Conventions</a></h4>
+            <p>A practical page on building a file naming convention: what to include, what to avoid, dates as YYYY-MM-DD, and documenting your convention in a README file.</p>
+          </div>
+          <div class="resource b">
+            <span class="pill guide">Guide</span>
+            <h4><a href="https://dmeg.cessda.eu/Data-Management-Expert-Guide/2.-Organise-Document/File-naming-and-folder-structure" target="_blank" rel="noopener">CESSDA Data Management Expert Guide — File Naming and Folder Structure</a></h4>
+            <p>Best practices and worked examples of useful file names, versioning, and organising folders for a project, with good and bad examples side by side.</p>
+          </div>
+          <div class="resource c">
+            <span class="pill guide">Guide</span>
+            <h4><a href="https://td.usnh.edu/TDClient/60/Portal/KB/ArticleDet?ID=3985" target="_blank" rel="noopener">USNH — Naming Conventions &amp; Best Practices for Files and Folders (OneDrive, Teams, SharePoint)</a></h4>
+            <p>How the same rules apply in shared cloud storage: short descriptive names, underscores or dashes instead of spaces, avoiding special characters and deep folder nesting.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>✍️ Reflective questions, write these in your journal</h2>
+          <ol class="qs">
+            <li>Write out the file naming convention you will use for your internship work, and give one example filename that follows it (e.g. <code>2026-08-31_ProjectName_Draft_v01.docx</code>).</li>
+            <li>Sketch (or type) the folder structure you'll use for this internship, top-level folders and one level of subfolders.</li>
+            <li>Describe a time messy files or lost versions caused you (or someone you know) a problem. Which practice from the resources would have prevented it?</li>
+            <li>How will you handle versions: what marks a draft, and what marks a final? What does "FINAL_final_v2" tell you about a broken system?</li>
+            <li>Why do spaces and special characters in filenames cause trouble in shared drives and links?</li>
+          </ol>
+        </div>
+
+        <div class="coach-panel">
+          <h3>👥 Compare notes with a fellow intern</h3>
+          <p>Compare your example filenames and folder sketches with a partner. Try to "break" each other's system: name a file the other person's convention can't handle cleanly. Then agree on <em>one shared convention</em> the two of you would recommend for the whole intern group, and write it in both journals. Finish by asking: <em>"What one question would extend or improve my notes?"</em></p>
+        </div>
+      </div>
+
+      <!-- CANVA SKILLS (Activity 4) -->
+      <div class="upskill-panel" id="upskill-canva">
+        <div class="card hero">
+          <h2>🖌️ Activity 4 · Ten basic Canva skills, build a design</h2>
+          <p style="margin:0 0 6px;"><span class="pill time">±2 hours · individual design, peer assistance allowed</span></p>
+          <p>Set up your own Canva account, learn ten basic skills, then prove them all in one design of your own.</p>
+        </div>
+
+        <div class="card top-navy">
+          <h2>🚀 Step A · Set up your Canva account</h2>
+          <ol class="steps">
+            <li>Go to <a href="https://www.canva.com" target="_blank" rel="noopener"><strong>canva.com</strong></a> and create a <strong>free account</strong> using your internship email address.</li>
+            <li>Work through the free <a href="https://www.canva.com/design-school/courses/canva-essentials" target="_blank" rel="noopener">Canva Essentials course</a> (about 60 minutes of short videos) to get oriented.</li>
+            <li>Create a new design, a good starting size is <strong>Poster</strong> or <strong>Instagram Post</strong>.</li>
+          </ol>
+        </div>
+
+        <div class="card top-blue">
+          <h2>✅ Step B · The ten skills, tick them off as you learn each one</h2>
+          <p style="font-size:.9rem;">Each skill links to a resource demonstrating it. Watch or read it, then practise the skill inside your own design.</p>
+
+          <label class="skill"><input type="checkbox" aria-label="Skill 1 done">
+            <span><h4>1 · Navigate the Canva homepage and editor</h4>
+            <p>Find templates, your projects, and the editor's side panel and toolbar — <a href="https://www.canva.com/design-school/courses/canva-essentials" target="_blank" rel="noopener">Canva Essentials course (video)</a></p></span>
+          </label>
+          <label class="skill"><input type="checkbox" aria-label="Skill 2 done">
+            <span><h4>2 · Choose and customise a template</h4>
+            <p>Start from a template and change its text, colours, and images to make it your own — <a href="https://www.canva.com/learn/how-to-canva-beginners-guide/" target="_blank" rel="noopener">How to Use Canva: A Beginner's Guide</a></p></span>
+          </label>
+          <label class="skill"><input type="checkbox" aria-label="Skill 3 done">
+            <span><h4>3 · Add and format text</h4>
+            <p>Add text boxes; change font, size, colour, alignment; try a text effect — <a href="https://www.canva.com/features/add-text-to-photo/" target="_blank" rel="noopener">Canva: Add Text to a Design (step-by-step)</a></p></span>
+          </label>
+          <label class="skill"><input type="checkbox" aria-label="Skill 4 done">
+            <span><h4>4 · Search and use Elements</h4>
+            <p>Find shapes, icons, graphics, and frames in the Elements panel and add them to your page — <a href="https://www.youtube.com/playlist?list=PL2jU5A3fxwC8kvuc_zB0FPzAiXwmRAoFQ" target="_blank" rel="noopener">Canva: Graphic Design for Beginners (YouTube playlist)</a></p></span>
+          </label>
+          <label class="skill"><input type="checkbox" aria-label="Skill 5 done">
+            <span><h4>5 · Upload and edit your own image</h4>
+            <p>Upload a photo, place it in your design, and adjust or filter it — <a href="https://www.canva.com/designschool/tutorials/designing/upload-edit-and-share/" target="_blank" rel="noopener">Canva Design School: Upload, Edit and Share (video)</a></p></span>
+          </label>
+          <label class="skill"><input type="checkbox" aria-label="Skill 6 done">
+            <span><h4>6 · Make text and images work together</h4>
+            <p>Pair type with imagery so both stay readable — contrast, placement, and overlays — <a href="https://www.canva.com/design-school/lessons/making-text-and-image-work-together-in-canva" target="_blank" rel="noopener">Canva lesson: Making Text and Image Work Together</a></p></span>
+          </label>
+          <label class="skill"><input type="checkbox" aria-label="Skill 7 done">
+            <span><h4>7 · Group, layer, and align elements</h4>
+            <p>Use Position → align, bring elements forward or backward, and group items that belong together — <a href="https://www.canva.com/help/layer-group-align/" target="_blank" rel="noopener">Canva Help: Group, Layer, and Align Elements</a></p></span>
+          </label>
+          <label class="skill"><input type="checkbox" aria-label="Skill 8 done">
+            <span><h4>8 · Resize and crop elements precisely</h4>
+            <p>Crop a photo inside a frame and resize elements to exact measurements — <a href="https://www.canva.com/help/resize-and-crop/" target="_blank" rel="noopener">Canva Help: Resize and Crop Elements</a></p></span>
+          </label>
+          <label class="skill"><input type="checkbox" aria-label="Skill 9 done">
+            <span><h4>9 · Resize a whole design</h4>
+            <p>Turn your poster into another size or format without starting over — <a href="https://www.canva.com/help/resize/" target="_blank" rel="noopener">Canva Help: Resize Designs</a></p></span>
+          </label>
+          <label class="skill"><input type="checkbox" aria-label="Skill 10 done">
+            <span><h4>10 · Download and share your design</h4>
+            <p>Export as PNG or PDF and create a view-only share link — <a href="https://brendacadman.com/how-to-download-share-designs-in-canva/" target="_blank" rel="noopener">How to Download &amp; Share Designs in Canva (tutorial)</a></p></span>
+          </label>
+        </div>
+
+        <div class="card top-gold">
+          <h2>🎯 Step C · Design something that shows all ten skills</h2>
+          <div class="brief"><strong>Your brief:</strong> design a one-page <strong>"Meet the intern" poster or social post about yourself</strong> (or, if you prefer, a poster for an imaginary team event). Your single design must visibly demonstrate all ten skills: it starts from a customised template, contains formatted text, at least two Elements, one uploaded image, deliberate text-over-image treatment, aligned and grouped items, a precisely cropped photo, and you must resize it into a second format and share it.</div>
+          <p style="font-size:.92rem;">While you work, apply what you learned in Activity 2: check your contrast, alignment, hierarchy, and white space. And practise Activity 3: name your downloaded files using your new naming convention.</p>
+          <ol class="steps">
+            <li>Build your design, ticking off each skill in the checklist above as you use it.</li>
+            <li>Click <strong>Share → Copy link</strong> (set to "anyone with the link can view") and add the link as a new entry in your <strong>Reflection Journal</strong>, tagged Progress.</li>
+            <li>Download one copy as PNG or PDF, named according to your Activity 3 convention.</li>
+          </ol>
+        </div>
+
+        <div class="coach-panel">
+          <h3>👥 Peer review, assist, don't do</h3>
+          <p>Show your design to at least one fellow intern. You may guide each other ("try Position → Align"), but <em>never touch each other's design</em>. Ask each other these questions and record the answers in your journal:</p>
+          <ol class="qs">
+            <li>"What one change would most improve my design, and which design principle does it relate to?"</li>
+            <li>"Which of the ten skills is least visible in my design, and how could I show it better?"</li>
+            <li>"What one question would extend or improve my reflective notes on this activity?"</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
   </section>
 
   <!-- INTERN SPACES -->
@@ -833,6 +1183,20 @@ document.getElementById('tabBar').addEventListener('click', (e)=>{
   window.scrollTo({top:0, behavior:'smooth'});
 });
 
+/* ---------- Induction Programme sub-nav ---------- */
+function switchInductionTab(tab){
+  document.querySelectorAll('#inductionSubtabs button').forEach(b=>b.classList.toggle('active', b.dataset.tab===tab));
+  document.querySelectorAll('.induction-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('induction-'+tab).classList.add('active');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+function switchUpskillTab(tab){
+  document.querySelectorAll('#upskillSubtabs button').forEach(b=>b.classList.toggle('active', b.dataset.tab===tab));
+  document.querySelectorAll('.upskill-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('upskill-'+tab).classList.add('active');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
 /* ---------- build team cards ---------- */
 function initials(name){ return name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase(); }
 
@@ -922,7 +1286,7 @@ function buildCtliUnits(){
   CTLI_UNITS.forEach((u,idx)=>{
     const accent = accents[idx % accents.length];
     const card = document.createElement('div');
-    card.className = 'card top-'+accent;
+    card.className = 'card unit-card top-'+accent;
     card.innerHTML = `
       <h3 style="margin-top:0;">${u.name}</h3>
       <div class="fact-list" id="unitFacts-${u.slug}" data-accent="${accent}" style="margin-top:8px;"></div>
