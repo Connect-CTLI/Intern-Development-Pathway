@@ -258,6 +258,19 @@
   .unit-card h3{font-size:.98rem;}
 
   /* ===== Induction Programme (merged from Reflective Activities pack) ===== */
+  /* distinct tab colours so these stand out from the main navy nav bar */
+  .induction-subtabs button{
+    background:#e6f1fb;border:1px solid var(--blue);color:var(--blue);
+  }
+  .induction-subtabs button:hover{background:#d2e9f8;}
+  .induction-subtabs button.active{background:var(--blue);color:var(--white);border-color:var(--blue);}
+
+  .upskill-subtabs button{
+    background:#fff6d9;border:1px solid var(--gold);color:#8a6900;
+  }
+  .upskill-subtabs button:hover{background:#ffefb8;}
+  .upskill-subtabs button.active{background:var(--gold);color:#3a2c00;border-color:var(--gold);}
+
   .induction-panel{display:none;}
   .induction-panel.active{display:block;}
   .upskill-panel{display:none;}
@@ -470,7 +483,7 @@
   <!-- INDUCTION PROGRAMME -->
   <section class="page" id="induction">
 
-    <div class="subtab-bar" id="inductionSubtabs">
+    <div class="subtab-bar induction-subtabs" id="inductionSubtabs">
       <button class="active" data-tab="start" onclick="switchInductionTab('start')">🏠 Start Here</button>
       <button data-tab="meet" onclick="switchInductionTab('meet')">🎲 Get to Know Each Other</button>
       <button data-tab="upskill" onclick="switchInductionTab('upskill')">📚 Upskilling 101</button>
@@ -547,7 +560,7 @@
         <p>Three activities that build the foundational skills you'll use throughout your internship: how good design works, how to keep your files in order, and ten practical Canva skills you'll prove in a design of your own.</p>
       </div>
 
-      <div class="subtab-bar" id="upskillSubtabs">
+      <div class="subtab-bar upskill-subtabs" id="upskillSubtabs">
         <button class="active" data-tab="design" onclick="switchUpskillTab('design')">🎨 Design Principles</button>
         <button data-tab="filing" onclick="switchUpskillTab('filing')">🗂️ Digital Filing</button>
         <button data-tab="canva" onclick="switchUpskillTab('canva')">🖌️ Canva Skills</button>
