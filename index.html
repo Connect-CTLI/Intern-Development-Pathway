@@ -465,23 +465,44 @@
     </div>
     <div class="people-grid" id="ctliUnitsGrid"></div>
 
-    <div class="card top-red">
-      <h3>Activity: Review the CTLI website</h3>
-      <p>While you're on the <a href="https://wcedctli.westerncape.gov.za/" target="_blank" rel="noopener">CTLI website</a>, have a proper look around, the navigation, the content, how easy it is to find courses or contact details, anything that feels outdated or broken. Note what you think could be improved.</p>
-      <div id="websiteFeedbackList"></div>
-      <details class="add-fact">
-        <summary>Add your feedback</summary>
-        <div class="inner">
-          <label>Who are you?</label>
-          <select id="websiteWho" onchange="loadOwnWebsiteFeedback()">
-            <option value="">Choose your name</option>
-          </select>
-          <label>What I'd improve on the CTLI website</label>
-          <textarea id="websiteFeedback" placeholder="What would you change or improve, and why?"></textarea>
-          <button class="btn" onclick="saveWebsiteFeedback()">💾 Save my feedback</button>
-          <span class="status" id="websiteStatus"></span>
-        </div>
-      </details>
+    <div class="grid grid-2">
+      <div class="card top-red">
+        <h3>Activity: Review the CTLI website</h3>
+        <p>While you're on the <a href="https://wcedctli.westerncape.gov.za/" target="_blank" rel="noopener">CTLI website</a>, have a proper look around, the navigation, the content, how easy it is to find courses or contact details, anything that feels outdated or broken. Note what you think could be improved.</p>
+        <div id="websiteFeedbackList"></div>
+        <details class="add-fact">
+          <summary>Add your feedback</summary>
+          <div class="inner">
+            <label>Who are you?</label>
+            <select id="websiteWho" onchange="loadOwnWebsiteFeedback()">
+              <option value="">Choose your name</option>
+            </select>
+            <label>What I'd improve on the CTLI website</label>
+            <textarea id="websiteFeedback" placeholder="What would you change or improve, and why?"></textarea>
+            <button class="btn" onclick="saveWebsiteFeedback()">💾 Save my feedback</button>
+            <span class="status" id="websiteStatus"></span>
+          </div>
+        </details>
+      </div>
+
+      <div class="card top-gold">
+        <h3>Activity: WCED values</h3>
+        <p>Visit the <a href="https://wcedonline.westerncape.gov.za/" target="_blank" rel="noopener">WCED website</a> and find the values that underpin the department. Name them below, then tell us which one resonates with you most, and why.</p>
+        <div id="valuesList"></div>
+        <details class="add-fact">
+          <summary>Add your reflection</summary>
+          <div class="inner">
+            <label>Who are you?</label>
+            <select id="valuesWho" onchange="loadOwnValuesReflection()">
+              <option value="">Choose your name</option>
+            </select>
+            <label>The WCED values, and which one resonates with you</label>
+            <textarea id="valuesReflection" placeholder="List the values you found on the WCED website, then say which one resonates with you most and why."></textarea>
+            <button class="btn" onclick="saveValuesReflection()">💾 Save my reflection</button>
+            <span class="status" id="valuesStatus"></span>
+          </div>
+        </details>
+      </div>
     </div>
   </section>
 
@@ -1428,6 +1449,47 @@ async function renderWebsiteFeedbackList(){
     : '<p class="fact-empty">No entries yet, be the first to add one.</p>';
 }
 
+/* ---------- WCED values activity ---------- */
+function buildValuesWhoOptions(){
+  const sel = document.getElementById('valuesWho');
+  INTERNS.forEach(i=>{
+    const opt = document.createElement('option');
+    opt.value = i.slug;
+    opt.textContent = i.name;
+    sel.appendChild(opt);
+  });
+}
+async function saveValuesReflection(){
+  const internSlug = document.getElementById('valuesWho').value;
+  const statusEl = document.getElementById('valuesStatus');
+  if(!internSlug){
+    statusEl.textContent = 'Choose your name first';
+    statusEl.className = 'status err';
+    return;
+  }
+  const val = document.getElementById('valuesReflection').value;
+  const ok = await saveKV('wced-values-reflection:'+internSlug, val, true);
+  flash(statusEl, ok);
+  renderValuesList();
+}
+async function loadOwnValuesReflection(){
+  const internSlug = document.getElementById('valuesWho').value;
+  const box = document.getElementById('valuesReflection');
+  if(!internSlug){ box.value = ''; return; }
+  box.value = await loadKV('wced-values-reflection:'+internSlug, true);
+}
+async function renderValuesList(){
+  const listEl = document.getElementById('valuesList');
+  const entries = [];
+  for(const i of INTERNS){
+    const v = await loadKV('wced-values-reflection:'+i.slug, true);
+    if(v && v.trim()) entries.push({name:i.name, fact:v});
+  }
+  listEl.innerHTML = entries.length
+    ? entries.map(e=>`<div class="fact-note f-gold"><b>${e.name}</b>${e.fact}</div>`).join('')
+    : '<p class="fact-empty">No entries yet, be the first to add one.</p>';
+}
+
 /* ---------- about you (intern intro board, shared) ---------- */
 function buildInternIntro(){
   const grid = document.getElementById('internIntroGrid');
@@ -2118,6 +2180,7 @@ window.addEventListener('DOMContentLoaded', async ()=>{
   buildTeam();
   buildCtliUnits();
   buildWebsiteWhoOptions();
+  buildValuesWhoOptions();
   buildInternIntro();
   buildInternLocks();
 
@@ -2125,6 +2188,7 @@ window.addEventListener('DOMContentLoaded', async ()=>{
     loadTeam(),
     loadCtliUnits(),
     renderWebsiteFeedbackList(),
+    renderValuesList(),
     loadInternIntro()
   ]);
 });
