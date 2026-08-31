@@ -244,6 +244,10 @@
   /* ===== Meet the Team: smaller cards, self-centering last row ===== */
   .people-grid{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-bottom:18px;}
   .people-grid > .card{flex:1 1 230px;max-width:250px;margin-bottom:0;}
+  /* fixed 3-per-row for core team, so the row never silently grows to 4-up on wide screens */
+  .team-row-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:22px;}
+  @media (max-width:900px){.team-row-grid{grid-template-columns:repeat(2,1fr);}}
+  @media (max-width:600px){.team-row-grid{grid-template-columns:1fr;}}
   .member-card{padding:16px 14px;}
   .member-card .avatar{width:48px;height:48px;font-size:.92rem;}
   .member-card h3{margin:9px 0 0;font-size:.92rem;}
@@ -256,6 +260,14 @@
   .member-card-lead h3{font-size:1.04rem;}
   .unit-card{padding:16px 18px;}
   .unit-card h3{font-size:.98rem;}
+
+  /* graduate intern mini-cards: smaller than the staff cards above */
+  .people-grid.interns-row{gap:12px;}
+  .people-grid.interns-row > .card{flex:0 1 150px;max-width:160px;}
+  .intern-mini-card{padding:12px 8px;}
+  .intern-mini-card .avatar{width:38px;height:38px;font-size:.76rem;}
+  .intern-mini-card h3{margin:7px 0 0;font-size:.8rem;}
+  .intern-mini-card .member-role{font-size:.56rem;padding:2px 8px;margin-top:5px;}
 
   /* ===== Induction Programme (merged from Reflective Activities pack) ===== */
   /* distinct tab colours so these stand out from the main navy nav bar */
@@ -442,7 +454,10 @@
       <p>Before you dive into the work, get to know the people you'll be working alongside. Have a look at each team member's LinkedIn or other professional profile and add one professional fact about them below, something that will help the rest of the team see you've done your homework. Each of the four of you adds your own entry, so pick your name before you save.</p>
     </div>
     <div id="teamLeaderGrid" style="max-width:340px;margin:0 auto 18px;"></div>
-    <div class="people-grid" id="teamGrid"></div>
+    <div class="team-row-grid" id="teamGrid"></div>
+
+    <h3 style="text-align:center;margin:6px 0 12px;color:var(--muted);font-size:.8rem;text-transform:uppercase;letter-spacing:1px;">Our Graduate Interns</h3>
+    <div class="people-grid interns-row" id="internTeamGrid"></div>
 
     <div class="card">
       <h2>The Wider CTLI Team</h2>
@@ -1254,6 +1269,22 @@ function buildTeam(){
     const pillColor = pillColors[idx % pillColors.length];
     grid.appendChild(buildMemberCard(p, avatarColor, pillColor));
   });
+
+  const internGrid = document.getElementById('internTeamGrid');
+  const internAvatarColors = ['navy','blue','red','navy'];
+  INTERNS.forEach((p,idx)=>{
+    internGrid.appendChild(buildInternTeamCard(p, internAvatarColors[idx % internAvatarColors.length]));
+  });
+}
+function buildInternTeamCard(p, avatarColor){
+  const card = document.createElement('div');
+  card.className = 'card member-card intern-mini-card c-'+avatarColor;
+  card.innerHTML = `
+    <div class="avatar">${initials(p.name)}</div>
+    <h3>${p.name}</h3>
+    <span class="member-role p-lime">Graduate Intern</span>
+  `;
+  return card;
 }
 async function saveTeamFact(teamSlug){
   const internSlug = document.getElementById('teamWho-'+teamSlug).value;
