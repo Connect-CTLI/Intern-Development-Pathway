@@ -400,6 +400,65 @@
   Built on the GROW coaching model
 </footer>
 
+<!-- ══════════════════════════════════════════════════════════════
+     FIREBASE SETUP — read this before deploying
+     ══════════════════════════════════════════════════════════════
+     This hub saves data to Firebase so a coach on one device can see
+     what an intern saved on a different device. To make saving work:
+
+     1. Go to https://console.firebase.google.com and create a free project
+        (Google account required, no cost at this scale).
+     2. In that project's left panel, go to Databases & Storage > Firestore,
+        click Create database, and choose "Start in test mode" for now
+        (see the security note below).
+     3. In Project settings (gear icon) > General, scroll to "Your apps",
+        click the </> (web) icon, register an app (any nickname), and copy
+        the firebaseConfig object it gives you.
+     4. Paste your values into firebaseConfig below, replacing the
+        placeholder text, then re-upload this file to GitHub Pages.
+
+     SECURITY NOTE: "test mode" allows anyone to read and write your
+     Firestore data for 30 days, after which it locks by default. Since
+     this hub has no login system (just the PIN codes in the interface),
+     open rules are the simplest option for a small trusted group, but it
+     does mean someone who found your Firebase project ID could read or
+     change the data directly, bypassing the PIN. Before test mode expires,
+     go to Firestore > Rules and set:
+       rules_version = '2';
+       service cloud.firestore {
+         match /databases/{database}/documents {
+           match /hubData/{docId} {
+             allow read, write: if true;
+           }
+         }
+       }
+     This keeps it open indefinitely. For real protection, Firebase
+     Authentication would need to be added, which is a bigger change.
+-->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyAnW7xY8luinbrersrHzZ5CXybLLiQspvU",
+    authDomain: "new-intern-development.firebaseapp.com",
+    projectId: "new-intern-development",
+    storageBucket: "new-intern-development.firebasestorage.app",
+    messagingSenderId: "123301945259",
+    appId: "1:123301945259:web:275cb96a68a8ab6d73fcee"
+  };
+  let db = null;
+  try{
+    if(firebaseConfig.apiKey && firebaseConfig.apiKey !== 'YOUR_API_KEY'){
+      firebase.initializeApp(firebaseConfig);
+      db = firebase.firestore();
+    } else {
+      console.warn('Firebase config not set yet — saving is disabled until firebaseConfig is filled in.');
+    }
+  }catch(e){
+    console.error('Firebase failed to initialise', e);
+  }
+</script>
+
 <script>
 /* ---------- data ---------- */
 const TEAM = [
@@ -731,14 +790,30 @@ const GROW_SECTIONS = [
   }
 ];
 
-/* ---------- storage helpers ---------- */
+/* ---------- storage helpers ----------
+   Uses Firebase Firestore, so saved data is shared across every device that
+   opens this page, not just the one it was saved on. Requires firebaseConfig
+   to be filled in above (see the FIREBASE SETUP comment near the top of this
+   file) and a Firestore database created in that Firebase project. */
 async function saveKV(key, value, shared){
-  try{ await window.storage.set(key, value, !!shared); return true; }
-  catch(e){ console.error('save failed', e); return false; }
+  try{
+    if(!db) return false;
+    await db.collection('hubData').doc(key).set({ value: value, updatedAt: Date.now() });
+    return true;
+  }catch(e){
+    console.error('save failed', e);
+    return false;
+  }
 }
 async function loadKV(key, shared){
-  try{ const r = await window.storage.get(key, !!shared); return r ? r.value : ''; }
-  catch(e){ return ''; }
+  try{
+    if(!db) return '';
+    const snap = await db.collection('hubData').doc(key).get();
+    return snap.exists ? (snap.data().value || '') : '';
+  }catch(e){
+    console.error('load failed', e);
+    return '';
+  }
 }
 function flash(el, ok){
   if(!el) return;
